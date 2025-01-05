@@ -28,16 +28,19 @@ const styles = {
   details: {
     backgroundColor: colors.white,
     borderRadius: "10px",
-    height: "35vh",
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-evenly",
-    padding: "2px 15px",
+    padding: 2,
   },
 
   detailsBox: {
     display: "flex",
     justifyContent: "center",
+  },
+
+  title: {
+    margin: "5px 0px",
   },
 
   buttonsSection: {

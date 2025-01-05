@@ -1,20 +1,61 @@
 import { useState } from "react";
 import styles from "./login.style";
+import InputField from "../../components/InputField";
+import { useForm, Controller } from "react-hook-form";
 import { createUser } from "../../services/usersService";
-import { Box, Button, Snackbar, TextField, Typography } from "@mui/material";
+import { Box, Button, Snackbar, Typography } from "@mui/material";
+
+interface UserFormAttributes {
+  username: string;
+  password: string;
+  email: string;
+}
+
+const defaultValues: UserFormAttributes = {
+  username: "",
+  password: "",
+  email: "",
+};
+
+const FORM_FIELDS: {
+  name: keyof UserFormAttributes;
+  rules: Record<string, unknown>;
+  placeholder: string;
+}[] = [
+  {
+    name: "username",
+    rules: { required: true },
+    placeholder: "Enter your username",
+  },
+  {
+    name: "password",
+    rules: { required: true },
+    placeholder: "Enter your password",
+  },
+  {
+    name: "email",
+    rules: {
+      required: true,
+      pattern: {
+        value: /\S+@\S+\.\S+/,
+        message: "Entered value does not match email format",
+      },
+    },
+    placeholder: "Enter your username",
+  },
+];
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
-  const [userInfo, setUserInfo] = useState({ username: "", password: "" });
   const [banner, setBanner] = useState(false);
-
-  const handleUserInfo = (value: string, field: string) => {
-    setUserInfo((prev) => ({ ...prev, [field]: value }));
-  };
+  const { control, getValues, formState } = useForm<UserFormAttributes>({
+    defaultValues: defaultValues,
+    mode: "onChange",
+  });
 
   const handleSave = async () => {
     try {
-      await createUser(userInfo);
+      await createUser(getValues());
     } catch (_err) {
       console.log(_err);
 
@@ -29,26 +70,34 @@ const Login = () => {
       </Box>
       <Box sx={styles.detailsBox}>
         <Box sx={styles.details}>
-          <Typography>Username</Typography>
-          <TextField
-            type="text"
-            placeholder="Enter your username"
-            onChange={({ target }) => handleUserInfo(target.value, "username")}
-            sx={styles.textField}
-          ></TextField>
-          <Typography>Password</Typography>
-          <TextField
-            type="password"
-            placeholder="Enter your password"
-            onChange={({ target }) => handleUserInfo(target.value, "password")}
-            sx={styles.textField}
-          ></TextField>
+          {FORM_FIELDS.map(
+            ({ name, rules, placeholder }) =>
+              ((isLogin && name !== "email") || !isLogin) && (
+                <Box>
+                  <Typography sx={styles.title}>{name}</Typography>
+                  <Controller
+                    name={name}
+                    control={control}
+                    rules={rules}
+                    render={({ field, fieldState: { error } }) => (
+                      <InputField
+                        error={error}
+                        sx={styles.textField}
+                        value={field.value ?? ""}
+                        onChange={field.onChange}
+                        placeholder={placeholder}
+                      />
+                    )}
+                  />
+                </Box>
+              )
+          )}
         </Box>
       </Box>
       <Box sx={styles.buttonsSection}>
         <Button
           sx={styles.actionButton}
-          disabled={userInfo.password == "" || userInfo.username == ""}
+          disabled={!formState.isValid}
           onClick={() => {
             void (async () => {
               if (isLogin) {
