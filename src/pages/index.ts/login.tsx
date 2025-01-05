@@ -4,6 +4,7 @@ import InputField from "../../components/InputField";
 import { useForm, Controller } from "react-hook-form";
 import { createUser } from "../../services/usersService";
 import { Box, Button, Snackbar, Typography } from "@mui/material";
+import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 
 interface UserFormAttributes {
   username: string;
@@ -110,6 +111,15 @@ const Login = () => {
         >
           {isLogin ? "Login" : "Register"}
         </Button>
+        <GoogleLogin
+          onSuccess={(credentialsRes: CredentialResponse) => {
+            console.log(credentialsRes);
+            //TODO create user and move to home
+          }}
+          onError={() => {
+            console.log("error in google authentication");
+          }}
+        />
         {isLogin && (
           <Box sx={styles.registerTextBox}>
             <Typography>Don't have an account ? </Typography>

@@ -8,7 +8,7 @@ export interface RouteType {
 
 export const UNAUTHENTICATED_ROUTES: RouteType[] = [
   {
-    path: "/login",
+    path: "/",
     name: "כניסה",
     element: Login,
   },
