@@ -36,10 +36,12 @@
     "experimentalDecorators": true,
     "useDefineForClassFields": true,
     "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
     // aliases should be added both here and in vite.config.ts
-    // "paths": {
-    //   "constants/*": ["./src/constants/*"]
-    // }
+    "paths": {
+      "constants/*": ["./src/constants/*"],
+      "services/*": ["./src/services/*"],
+      "components/*": ["./src/components/*"]
+    }
   }
 }

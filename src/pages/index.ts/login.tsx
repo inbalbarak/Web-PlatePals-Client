@@ -1,9 +1,10 @@
 import { useState } from "react";
 import styles from "./login.style";
-import InputField from "../../components/InputField";
+import InputField from "components/InputField";
 import { useForm, Controller } from "react-hook-form";
-import { createUser } from "../../services/usersService";
 import { Box, Button, Snackbar, Typography } from "@mui/material";
+import { googleLogin, login, register } from "services/auth.service";
+import { ACCESS_TOKEN, REFRESH_TOKEN } from "constants/localStorage";
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 
 interface UserFormAttributes {
@@ -54,16 +55,6 @@ const Login = () => {
     mode: "onChange",
   });
 
-  const handleSave = async () => {
-    try {
-      await createUser(getValues());
-    } catch (_err) {
-      console.log(_err);
-
-      setBanner(true);
-    }
-  };
-
   return (
     <Box sx={styles.root}>
       <Box sx={styles.imageBox}>
@@ -101,35 +92,62 @@ const Login = () => {
           disabled={!formState.isValid}
           onClick={() => {
             void (async () => {
-              if (isLogin) {
-                return; // TODO authenticate and move to home
-              } else {
-                return await handleSave();
+              try {
+                if (isLogin) {
+                  const token = await login(getValues());
+
+                  localStorage.setItem(ACCESS_TOKEN, token.accessToken);
+                  localStorage.setItem(REFRESH_TOKEN, token.refreshToken);
+
+                  //TODO move to home
+                } else {
+                  const token = await register(getValues());
+
+                  localStorage.setItem(ACCESS_TOKEN, token.accessToken);
+                  localStorage.setItem(REFRESH_TOKEN, token.refreshToken);
+
+                  //TODO move to home
+                }
+              } catch (_err) {
+                setBanner(true);
+                setIsLogin(true);
               }
             })();
           }}
         >
           {isLogin ? "Login" : "Register"}
         </Button>
-        <GoogleLogin
-          onSuccess={(credentialsRes: CredentialResponse) => {
-            console.log(credentialsRes);
-            //TODO create user and move to home
-          }}
-          onError={() => {
-            console.log("error in google authentication");
-          }}
-        />
+
         {isLogin && (
-          <Box sx={styles.registerTextBox}>
-            <Typography>Don't have an account ? </Typography>
-            <Typography
-              sx={styles.registerText}
-              onClick={() => setIsLogin(false)}
-            >
-              Register
-            </Typography>
-          </Box>
+          <>
+            <GoogleLogin
+              onSuccess={async (credentialsRes: CredentialResponse) => {
+                try {
+                  const token = await googleLogin(
+                    credentialsRes.credential ?? ""
+                  );
+
+                  localStorage.setItem(ACCESS_TOKEN, token.accessToken);
+                  localStorage.setItem(REFRESH_TOKEN, token.refreshToken);
+                  //TODO  move to home
+                } catch (_err) {
+                  setBanner(true);
+                }
+              }}
+              onError={() => {
+                console.log("error in google authentication");
+              }}
+            />
+            <Box sx={styles.registerTextBox}>
+              <Typography>Don't have an account ? </Typography>
+              <Typography
+                sx={styles.registerText}
+                onClick={() => setIsLogin(false)}
+              >
+                Register
+              </Typography>
+            </Box>
+          </>
         )}
       </Box>
       <Snackbar
