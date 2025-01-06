@@ -54,6 +54,10 @@ const styles = {
     borderRadius: "16px 16px 0 0",
   },
 
+  googleLogin: {
+    margin: "10px 20px 0px",
+  },
+
   actionButton: {
     backgroundColor: colors.mainOrange,
     color: colors.white,

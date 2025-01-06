@@ -120,24 +120,26 @@ const Login = () => {
 
         {isLogin && (
           <>
-            <GoogleLogin
-              onSuccess={async (credentialsRes: CredentialResponse) => {
-                try {
-                  const token = await googleLogin(
-                    credentialsRes.credential ?? ""
-                  );
+            <Box sx={styles.googleLogin}>
+              <GoogleLogin
+                onSuccess={async (credentialsRes: CredentialResponse) => {
+                  try {
+                    const token = await googleLogin(
+                      credentialsRes.credential ?? ""
+                    );
 
-                  localStorage.setItem(ACCESS_TOKEN, token.accessToken);
-                  localStorage.setItem(REFRESH_TOKEN, token.refreshToken);
-                  //TODO  move to home
-                } catch (_err) {
-                  setBanner(true);
-                }
-              }}
-              onError={() => {
-                console.log("error in google authentication");
-              }}
-            />
+                    localStorage.setItem(ACCESS_TOKEN, token.accessToken);
+                    localStorage.setItem(REFRESH_TOKEN, token.refreshToken);
+                    //TODO  move to home
+                  } catch (_err) {
+                    setBanner(true);
+                  }
+                }}
+                onError={() => {
+                  console.log("error in google authentication");
+                }}
+              />
+            </Box>
             <Box sx={styles.registerTextBox}>
               <Typography>Don't have an account ? </Typography>
               <Typography
