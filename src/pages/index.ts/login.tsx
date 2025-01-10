@@ -93,21 +93,14 @@ const Login = () => {
           onClick={() => {
             void (async () => {
               try {
-                if (isLogin) {
-                  const token = await login(getValues());
+                const token = isLogin
+                  ? await login(getValues())
+                  : await register(getValues());
 
-                  localStorage.setItem(ACCESS_TOKEN, token.accessToken);
-                  localStorage.setItem(REFRESH_TOKEN, token.refreshToken);
+                localStorage.setItem(ACCESS_TOKEN, token.accessToken);
+                localStorage.setItem(REFRESH_TOKEN, token.refreshToken);
 
-                  //TODO move to home
-                } else {
-                  const token = await register(getValues());
-
-                  localStorage.setItem(ACCESS_TOKEN, token.accessToken);
-                  localStorage.setItem(REFRESH_TOKEN, token.refreshToken);
-
-                  //TODO move to home
-                }
+                //TODO move to home
               } catch (_err) {
                 setBanner(true);
                 setIsLogin(true);
