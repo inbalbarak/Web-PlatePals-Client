@@ -4,7 +4,7 @@ import InputField from "components/InputField";
 import { useForm, Controller } from "react-hook-form";
 import { Box, Button, Snackbar, Typography } from "@mui/material";
 import { googleLogin, login, register } from "services/auth.service";
-import { ACCESS_TOKEN, REFRESH_TOKEN } from "constants/localStorage";
+import { ACCESS_TOKEN, REFRESH_TOKEN, USERNAME } from "constants/localStorage";
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 
 interface UserFormAttributes {
@@ -98,6 +98,8 @@ const Login = () => {
 
                   localStorage.setItem(ACCESS_TOKEN, token.accessToken);
                   localStorage.setItem(REFRESH_TOKEN, token.refreshToken);
+                  localStorage.setItem(USERNAME, getValues("username"));
+                  window.dispatchEvent(new Event("storage"));
 
                   //TODO move to home
                 } else {
@@ -105,6 +107,8 @@ const Login = () => {
 
                   localStorage.setItem(ACCESS_TOKEN, token.accessToken);
                   localStorage.setItem(REFRESH_TOKEN, token.refreshToken);
+                  localStorage.setItem(USERNAME, getValues("username"));
+                  window.dispatchEvent(new Event("storage"));
 
                   //TODO move to home
                 }
@@ -130,6 +134,9 @@ const Login = () => {
 
                     localStorage.setItem(ACCESS_TOKEN, token.accessToken);
                     localStorage.setItem(REFRESH_TOKEN, token.refreshToken);
+                    localStorage.setItem(USERNAME, getValues("username"));
+                    window.dispatchEvent(new Event("storage"));
+
                     //TODO  move to home
                   } catch (_err) {
                     setBanner(true);
@@ -154,9 +161,9 @@ const Login = () => {
       </Box>
       <Snackbar
         open={banner}
-        autoHideDuration={5000}
+        autoHideDuration={4000}
         onClose={() => setBanner(false)}
-        message="An error accrued while saving a user, try again later"
+        message="An error accrued while trying to login, try again later"
       />
     </Box>
   );

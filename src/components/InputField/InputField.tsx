@@ -14,7 +14,7 @@ const InputField = ({
 }: {
   sx?: SxProps;
   error?: FieldError;
-  value?: string | number | null;
+  value?: string | string[] | number | null;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   disabled?: boolean;
