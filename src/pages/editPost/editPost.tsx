@@ -87,6 +87,8 @@ const EditPost = (post?: PostAttributes) => {
         ...getValues(),
         author: localStorage.getItem(USERNAME) ?? "",
       } as PostAttributes);
+
+      //TODO go back to home
     } catch (_err) {
       setBanner(true);
     }
