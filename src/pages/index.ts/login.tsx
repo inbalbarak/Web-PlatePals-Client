@@ -54,6 +54,7 @@ const Login = () => {
     defaultValues: defaultValues,
     mode: "onChange",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <Box sx={styles.root}>
@@ -89,10 +90,11 @@ const Login = () => {
       <Box sx={styles.buttonsSection}>
         <Button
           sx={styles.actionButton}
-          disabled={!formState.isValid}
+          disabled={!formState.isValid || isLoading}
           onClick={() => {
             void (async () => {
               try {
+                setIsLoading(true);
                 const token = isLogin
                   ? await login(getValues())
                   : await register(getValues());
@@ -104,6 +106,7 @@ const Login = () => {
               } catch (_err) {
                 setBanner(true);
                 setIsLogin(true);
+                setIsLoading(false);
               }
             })();
           }}
@@ -117,6 +120,7 @@ const Login = () => {
               <GoogleLogin
                 onSuccess={async (credentialsRes: CredentialResponse) => {
                   try {
+                    setIsLoading(true);
                     const token = await googleLogin(
                       credentialsRes.credential ?? ""
                     );
@@ -126,6 +130,7 @@ const Login = () => {
                     //TODO  move to home
                   } catch (_err) {
                     setBanner(true);
+                    setIsLoading(false);
                   }
                 }}
                 onError={() => {
@@ -149,7 +154,7 @@ const Login = () => {
         open={banner}
         autoHideDuration={5000}
         onClose={() => setBanner(false)}
-        message="An error accrued while saving a user, try again later"
+        message="An error accrued while logging in, try again later"
       />
     </Box>
   );
