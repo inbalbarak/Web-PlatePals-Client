@@ -1,10 +1,15 @@
+import {
+  ACCESS_TOKEN,
+  REFRESH_TOKEN,
+  TOKEN_TIMESTAMP,
+  USERNAME,
+} from "constants/localStorage";
 import { useState } from "react";
 import styles from "./login.style";
 import InputField from "components/InputField";
 import { useForm, Controller } from "react-hook-form";
 import { Box, Button, Snackbar, Typography } from "@mui/material";
 import { googleLogin, login, register } from "services/auth.service";
-import { ACCESS_TOKEN, REFRESH_TOKEN } from "constants/localStorage";
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 
 interface UserFormAttributes {
@@ -94,15 +99,27 @@ const Login = () => {
           onClick={() => {
             void (async () => {
               try {
-                setIsLoading(true);
-                const token = isLogin
-                  ? await login(getValues())
-                  : await register(getValues());
+                if (isLogin) {
+                  const token = await login(getValues());
 
-                localStorage.setItem(ACCESS_TOKEN, token.accessToken);
-                localStorage.setItem(REFRESH_TOKEN, token.refreshToken);
+                  localStorage.setItem(ACCESS_TOKEN, token.accessToken);
+                  localStorage.setItem(REFRESH_TOKEN, token.refreshToken);
+                  localStorage.setItem(USERNAME, getValues("username"));
+                  localStorage.setItem(TOKEN_TIMESTAMP, new Date().toString());
 
-                //TODO move to home
+                  window.dispatchEvent(new Event("storage"));
+
+                  //TODO move to home
+                } else {
+                  const token = await register(getValues());
+
+                  localStorage.setItem(ACCESS_TOKEN, token.accessToken);
+                  localStorage.setItem(REFRESH_TOKEN, token.refreshToken);
+                  localStorage.setItem(USERNAME, getValues("username"));
+                  window.dispatchEvent(new Event("storage"));
+
+                  //TODO move to home
+                }
               } catch (_err) {
                 setBanner(true);
                 setIsLogin(true);
@@ -127,6 +144,13 @@ const Login = () => {
 
                     localStorage.setItem(ACCESS_TOKEN, token.accessToken);
                     localStorage.setItem(REFRESH_TOKEN, token.refreshToken);
+                    localStorage.setItem(USERNAME, getValues("username"));
+                    localStorage.setItem(
+                      TOKEN_TIMESTAMP,
+                      new Date().toString()
+                    );
+                    window.dispatchEvent(new Event("storage"));
+
                     //TODO  move to home
                   } catch (_err) {
                     setBanner(true);
@@ -152,9 +176,9 @@ const Login = () => {
       </Box>
       <Snackbar
         open={banner}
-        autoHideDuration={5000}
+        autoHideDuration={4000}
         onClose={() => setBanner(false)}
-        message="An error accrued while logging in, try again later"
+        message="An error accrued while trying to login, try again later"
       />
     </Box>
   );

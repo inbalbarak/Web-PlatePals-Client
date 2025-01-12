@@ -33,6 +33,7 @@ export const colors = {
   dreamlessBlack: "#111111",
   outrageousOrange: "#FA6A52",
   mainOrange: "#FF9B05",
+  concrete: "#F3F3F3",
 };
 
 export const shadows = {
