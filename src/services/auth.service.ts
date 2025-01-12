@@ -31,8 +31,6 @@ export const register = async (user: UserAttributes) => {
     password: res.password,
     username: res.username,
   });
-
-  // return res.data;
 };
 
 export const refresh = async (refreshToken: string) => {

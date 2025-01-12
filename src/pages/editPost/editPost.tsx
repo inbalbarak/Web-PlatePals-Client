@@ -33,6 +33,7 @@ const FORM_FIELDS: {
   rules?: Record<string, unknown>;
   sx?: SxProps;
   placeholder?: string;
+  multiline?: boolean;
 }[] = [
   {
     name: "title",
@@ -48,6 +49,7 @@ const FORM_FIELDS: {
     },
     sx: styles.bigTextField,
     placeholder: "Enter your ingredients",
+    multiline: true,
   },
   {
     name: "instructions",
@@ -57,6 +59,7 @@ const FORM_FIELDS: {
     },
     sx: styles.bigTextField,
     placeholder: "Enter the details of your recipe",
+    multiline: true,
   },
   {
     name: "tags",
@@ -99,65 +102,68 @@ const EditPost = (post?: PostAttributes) => {
       {/* TOOD add dropzone */}
       <Box sx={styles.recipeBox}>
         <Box sx={styles.innerDisplay}>
-          {FORM_FIELDS.map(({ name, rules, displayName, sx, placeholder }) => (
-            <Box key={name}>
-              <Typography sx={styles.title}>{displayName}</Typography>
-              <Controller
-                name={name}
-                control={control}
-                rules={rules}
-                render={({ field, fieldState: { error } }) =>
-                  name !== "tags" ? (
-                    <InputField
-                      error={error}
-                      sx={sx}
-                      value={field.value}
-                      onChange={field.onChange}
-                      placeholder={placeholder}
-                    />
-                  ) : (
-                    <Box sx={styles.tagsBox}>
-                      {tags?.length &&
-                        chunk(tags, 3).map(
-                          (tagsArray: TagAttributes[], index) => (
-                            <Box sx={styles.tagsRow} key={index}>
-                              {tagsArray.map((tag) => {
-                                const isSelected = watchedTags?.includes(
-                                  tag._id
-                                );
+          {FORM_FIELDS.map(
+            ({ name, rules, displayName, multiline, sx, placeholder }) => (
+              <Box key={name}>
+                <Typography sx={styles.title}>{displayName}</Typography>
+                <Controller
+                  name={name}
+                  control={control}
+                  rules={rules}
+                  render={({ field, fieldState: { error } }) =>
+                    name !== "tags" ? (
+                      <InputField
+                        error={error}
+                        sx={sx}
+                        value={field.value}
+                        onChange={field.onChange}
+                        placeholder={placeholder}
+                        multiline={multiline}
+                      />
+                    ) : (
+                      <Box sx={styles.tagsBox}>
+                        {tags?.length &&
+                          chunk(tags, 3).map(
+                            (tagsArray: TagAttributes[], index) => (
+                              <Box sx={styles.tagsRow} key={index}>
+                                {tagsArray.map((tag) => {
+                                  const isSelected = watchedTags?.includes(
+                                    tag._id
+                                  );
 
-                                return (
-                                  <Button
-                                    key={`${tag._id}-${isSelected}`}
-                                    onClick={(_event) => {
-                                      const currentTags =
-                                        getValues("tags") ?? [];
+                                  return (
+                                    <Button
+                                      key={`${tag._id}-${isSelected}`}
+                                      onClick={(_event) => {
+                                        const currentTags =
+                                          getValues("tags") ?? [];
 
-                                      setValue(
-                                        "tags",
-                                        isSelected
-                                          ? currentTags?.filter(
-                                              (existingTag) =>
-                                                existingTag !== tag._id
-                                            )
-                                          : [...currentTags, tag._id]
-                                      );
-                                    }}
-                                    sx={styles.tag(isSelected)}
-                                  >
-                                    {tag.name}
-                                  </Button>
-                                );
-                              })}
-                            </Box>
-                          )
-                        )}
-                    </Box>
-                  )
-                }
-              />
-            </Box>
-          ))}
+                                        setValue(
+                                          "tags",
+                                          isSelected
+                                            ? currentTags?.filter(
+                                                (existingTag) =>
+                                                  existingTag !== tag._id
+                                              )
+                                            : [...currentTags, tag._id]
+                                        );
+                                      }}
+                                      sx={styles.tag(isSelected)}
+                                    >
+                                      {tag.name}
+                                    </Button>
+                                  );
+                                })}
+                              </Box>
+                            )
+                          )}
+                      </Box>
+                    )
+                  }
+                />
+              </Box>
+            )
+          )}
         </Box>
       </Box>
       <Button

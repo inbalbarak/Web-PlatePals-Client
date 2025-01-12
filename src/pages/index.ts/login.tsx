@@ -4,13 +4,14 @@ import {
   TOKEN_TIMESTAMP,
   USERNAME,
 } from "constants/localStorage";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./login.style";
 import InputField from "components/InputField";
 import { useForm, Controller } from "react-hook-form";
 import { Box, Button, Snackbar, Typography } from "@mui/material";
-import { googleLogin, login, register } from "services/auth.service";
+import { googleLogin, login, refresh, register } from "services/auth.service";
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
+import { isTokenValid } from "services/axiosInstance";
 
 interface UserFormAttributes {
   username: string;
@@ -59,6 +60,24 @@ const Login = () => {
     defaultValues: defaultValues,
     mode: "onChange",
   });
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const autoLogin = async () => {
+      if (!isTokenValid()) {
+        const tokens = await refresh(localStorage.getItem(REFRESH_TOKEN) ?? "");
+        localStorage.setItem(ACCESS_TOKEN, tokens.accessToken);
+        localStorage.setItem(REFRESH_TOKEN, tokens.refreshToken);
+        localStorage.setItem(TOKEN_TIMESTAMP, new Date().toString());
+      }
+
+      //TODO navigate to home
+    };
+
+    autoLogin()
+      .then((_res) => console.log("auto login"))
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <Box sx={styles.root}>
@@ -94,34 +113,27 @@ const Login = () => {
       <Box sx={styles.buttonsSection}>
         <Button
           sx={styles.actionButton}
-          disabled={!formState.isValid}
+          disabled={!formState.isValid || isLoading}
           onClick={() => {
             void (async () => {
               try {
-                if (isLogin) {
-                  const token = await login(getValues());
+                setIsLoading(true);
+                const token = isLogin
+                  ? await login(getValues())
+                  : await register(getValues());
 
-                  localStorage.setItem(ACCESS_TOKEN, token.accessToken);
-                  localStorage.setItem(REFRESH_TOKEN, token.refreshToken);
-                  localStorage.setItem(USERNAME, getValues("username"));
-                  localStorage.setItem(TOKEN_TIMESTAMP, new Date().toString());
+                localStorage.setItem(ACCESS_TOKEN, token.accessToken);
+                localStorage.setItem(REFRESH_TOKEN, token.refreshToken);
+                localStorage.setItem(USERNAME, getValues("username"));
+                localStorage.setItem(TOKEN_TIMESTAMP, new Date().toString());
 
-                  window.dispatchEvent(new Event("storage"));
+                window.dispatchEvent(new Event("storage"));
 
-                  //TODO move to home
-                } else {
-                  const token = await register(getValues());
-
-                  localStorage.setItem(ACCESS_TOKEN, token.accessToken);
-                  localStorage.setItem(REFRESH_TOKEN, token.refreshToken);
-                  localStorage.setItem(USERNAME, getValues("username"));
-                  window.dispatchEvent(new Event("storage"));
-
-                  //TODO move to home
-                }
+                //TODO move to home
               } catch (_err) {
                 setBanner(true);
                 setIsLogin(true);
+                setIsLoading(false);
               }
             })();
           }}
@@ -135,6 +147,7 @@ const Login = () => {
               <GoogleLogin
                 onSuccess={async (credentialsRes: CredentialResponse) => {
                   try {
+                    setIsLoading(true);
                     const token = await googleLogin(
                       credentialsRes.credential ?? ""
                     );
@@ -151,6 +164,7 @@ const Login = () => {
                     //TODO  move to home
                   } catch (_err) {
                     setBanner(true);
+                    setIsLoading(false);
                   }
                 }}
                 onError={() => {
@@ -174,7 +188,7 @@ const Login = () => {
         open={banner}
         autoHideDuration={4000}
         onClose={() => setBanner(false)}
-        message="An error accrued while trying to login, try again later"
+        message="An error accrued while logging in, try again later"
       />
     </Box>
   );

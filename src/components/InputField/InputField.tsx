@@ -11,6 +11,7 @@ const InputField = ({
   placeholder,
   type = "text",
   disabled = false,
+  multiline,
 }: {
   sx?: SxProps;
   error?: FieldError;
@@ -20,9 +21,11 @@ const InputField = ({
   disabled?: boolean;
   type?: "number" | "text";
   showAdornment?: boolean;
+  multiline?: boolean;
 }) => (
   <TextField
     error={!!error}
+    multiline={multiline}
     sx={{ ...styles.textField, ...sx }}
     value={value}
     disabled={disabled}

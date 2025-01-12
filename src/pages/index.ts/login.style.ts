@@ -63,6 +63,11 @@ const styles = {
     color: colors.white,
     borderRadius: "20px",
     width: "80vw",
+
+    "&:hover": {
+      backgroundColor: colors.mainOrange,
+      color: colors.white,
+    },
     "&.Mui-disabled": {
       backgroundColor: colors.athensGray,
     },
