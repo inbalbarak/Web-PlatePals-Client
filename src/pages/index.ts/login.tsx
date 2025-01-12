@@ -11,6 +11,8 @@ import { useForm, Controller } from "react-hook-form";
 import { Box, Button, Snackbar, Typography } from "@mui/material";
 import { googleLogin, login, register } from "services/auth.service";
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
+import { useNavigate } from "react-router-dom";
+import { PATHS } from "constants/routes";
 
 interface UserFormAttributes {
   username: string;
@@ -61,6 +63,8 @@ const Login = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
 
+  const navigate = useNavigate();
+
   return (
     <Box sx={styles.root}>
       <Box sx={styles.imageBox}>
@@ -109,7 +113,7 @@ const Login = () => {
 
                   window.dispatchEvent(new Event("storage"));
 
-                  //TODO move to home
+                  navigate(PATHS.HOME);
                 } else {
                   const token = await register(getValues());
 
@@ -118,7 +122,7 @@ const Login = () => {
                   localStorage.setItem(USERNAME, getValues("username"));
                   window.dispatchEvent(new Event("storage"));
 
-                  //TODO move to home
+                  navigate(PATHS.HOME);
                 }
               } catch (_err) {
                 setBanner(true);
@@ -151,7 +155,7 @@ const Login = () => {
                     );
                     window.dispatchEvent(new Event("storage"));
 
-                    //TODO  move to home
+                    navigate(PATHS.HOME);
                   } catch (_err) {
                     setBanner(true);
                     setIsLoading(false);

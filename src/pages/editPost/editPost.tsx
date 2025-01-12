@@ -10,6 +10,8 @@ import tagsService, { TagAttributes } from "services/tags.service";
 import { Box, Button, Snackbar, SxProps, Typography } from "@mui/material";
 import { upsert } from "services/posts.service";
 import { USERNAME } from "constants/localStorage";
+import { useNavigate } from "react-router-dom";
+import { PATHS } from "constants/routes";
 
 export interface PostFormAttributes {
   image: string | null;
@@ -73,6 +75,8 @@ const EditPost = (post?: PostAttributes) => {
       mode: "all",
     });
 
+  const navigate = useNavigate();
+
   const watchedTags = watch("tags");
 
   const { data: tags } = useQuery(QUERY_KEYS.TAGS, tagsService.getAll, {
@@ -88,7 +92,7 @@ const EditPost = (post?: PostAttributes) => {
         author: localStorage.getItem(USERNAME) ?? "",
       } as PostAttributes);
 
-      //TODO go back to home
+      navigate(PATHS.HOME);
     } catch (_err) {
       setBanner(true);
     }
