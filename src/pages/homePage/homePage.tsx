@@ -2,23 +2,17 @@ import { chunk } from "lodash";
 import { useEffect, useState } from "react";
 import styles from "./homePage.style";
 import { useQuery } from "react-query";
-import InputField from "components/InputField";
 import { QUERY_KEYS } from "constants/queryKeys";
-import { useForm, Controller } from "react-hook-form";
-import { PostAttributes } from "src/interfaces/post.interface";
 import tagsService, { TagAttributes } from "services/tags.service";
 import {
   Avatar,
   Box,
   Button,
-  Snackbar,
-  SxProps,
   ToggleButton,
   ToggleButtonGroup,
   Typography,
 } from "@mui/material";
-import { upsert } from "services/posts.service";
-import { USERNAME } from "constants/localStorage";
+import PostsList from "components/PostsList/PostsList";
 
 enum Sort {
   TOP = "TOP",
@@ -38,7 +32,9 @@ const HomePage = () => {
   }, [sort]);
 
   const handleChange = (_: React.MouseEvent<HTMLElement>, newSort: Sort) => {
-    setSort(newSort);
+    if (newSort !== null) {
+      setSort(newSort);
+    }
   };
 
   const control = {
@@ -107,6 +103,7 @@ const HomePage = () => {
       >
         {sortButtons}
       </ToggleButtonGroup>
+      <PostsList />
     </Box>
   );
 };
