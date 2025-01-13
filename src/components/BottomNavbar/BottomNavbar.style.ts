@@ -1,5 +1,7 @@
 const styles = {
   bottomNavigation: {
+    borderTop: "1px solid rgba(0, 0, 0, 0.12)",
+    padding: "10px 0",
     position: "fixed",
     zIndex: 200,
     bottom: 0,
