@@ -1,3 +1,11 @@
+import {
+  Box,
+  Button,
+  IconButton,
+  Snackbar,
+  SxProps,
+  Typography,
+} from "@mui/material";
 import { chunk } from "lodash";
 import { useState } from "react";
 import styles from "./editPost.style";
@@ -7,9 +15,11 @@ import { QUERY_KEYS } from "constants/queryKeys";
 import { useForm, Controller } from "react-hook-form";
 import { PostAttributes } from "src/interfaces/post.interface";
 import tagsService, { TagAttributes } from "services/tags.service";
-import { Box, Button, Snackbar, SxProps, Typography } from "@mui/material";
 import { upsert } from "services/posts.service";
 import { USERNAME } from "constants/localStorage";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useLocation, useNavigate } from "react-router-dom";
+import { PATHS } from "constants/routes";
 
 export interface PostFormAttributes {
   image: string | null;
@@ -70,6 +80,8 @@ const FORM_FIELDS: {
 
 const EditPost = (post?: PostAttributes) => {
   const [banner, setBanner] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
   const { control, formState, setValue, getValues, watch } =
     useForm<PostFormAttributes>({
       defaultValues: post ?? defaultValues,
@@ -99,6 +111,17 @@ const EditPost = (post?: PostAttributes) => {
 
   return (
     <Box sx={styles.root}>
+      <Box sx={styles.header}>
+        <IconButton
+          sx={styles.backButton}
+          onClick={() => (location.key ? navigate(-1) : navigate(PATHS.MAIN))}
+        >
+          <ArrowBackIcon />
+        </IconButton>
+        <Typography sx={styles.headerText}>
+          {post ? "Edit your recipe" : "Create new recipe"}
+        </Typography>
+      </Box>
       {/* TOOD add dropzone */}
       <Box sx={styles.recipeBox}>
         <Box sx={styles.innerDisplay}>
