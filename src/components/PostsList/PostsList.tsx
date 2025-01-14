@@ -1,55 +1,53 @@
 import { Box, CardContent, CardMedia, Typography } from "@mui/material";
+import { Star as StarIcon } from "@mui/icons-material";
 import { PostAttributes } from "src/interfaces/post.interface";
+import styles from "./PostsList.style";
 
 const PostsList = () =>
   // posts: PostAttributes[]
   {
+    const title = "Pasta Alio Olio";
+    const reviews = "2.5k";
+    const avgRating = "4.5";
+    const user = "Mac Miller";
+
     const createPost = () =>
       // post: PostAttributes
       {
         return (
-          <Box sx={{ display: "flex", width: "90%" }}>
+          <Box sx={styles.post}>
             <CardMedia
               component="img"
-              sx={{ width: 120 }}
-              image="/static/images/cards/live-from-space.jpg"
+              sx={styles.postImage}
+              image="/public/recipe-default.png"
             />
-            <Box sx={{ display: "flex", flexDirection: "column", flexGrow: 1 }}>
-              <CardContent>
-                <Typography component="div" variant="h6">
-                  Pasta Alio Olio
-                </Typography>
+            <CardContent sx={styles.postContent}>
+              <Typography component="div" variant="h6">
+                {title}
+              </Typography>
+              <Box sx={styles.postRatings}>
+                <StarIcon sx={styles.postRatingIcon} />
                 <Typography
                   variant="subtitle2"
                   component="div"
-                  sx={{ color: "text.secondary" }}
+                  sx={styles.postRatingText}
                 >
-                  2.5k reviews
+                  {`${avgRating} | ${reviews} Reviews`}
                 </Typography>
-                <Typography
-                  variant="subtitle2"
-                  component="div"
-                  sx={{ color: "text.secondary" }}
-                >
-                  Mac Miller
-                </Typography>
-              </CardContent>
-            </Box>
+              </Box>
+              <Typography
+                variant="subtitle1"
+                component="div"
+                sx={{ color: "text.secondary" }}
+              >
+                {user}
+              </Typography>
+            </CardContent>
           </Box>
         );
       };
     return (
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: "10px",
-          width: "100%",
-          marginTop: "20px",
-          flexWrap: "wrap",
-        }}
-      >
+      <Box sx={styles.root}>
         {/* {posts?.map((post) => (
         <div key={post._id}>
           <h1>{post.title}</h1>
