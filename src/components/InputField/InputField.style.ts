@@ -11,7 +11,7 @@ const styles = {
     color: colors.vividRed,
   },
 
-  textField: {
+  textField: (multiline?: boolean) => ({
     width: "100%",
     background: colors.white,
 
@@ -22,10 +22,10 @@ const styles = {
     },
 
     "& .MuiOutlinedInput-root": {
-      height: "2.5rem",
+      ...(!multiline && { height: "2.5rem" }),
       padding: "10px 2px",
     },
-  },
+  }),
 };
 
 export default styles;

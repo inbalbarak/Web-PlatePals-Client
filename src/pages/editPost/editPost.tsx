@@ -49,7 +49,7 @@ const FORM_FIELDS: {
     name: "title",
     displayName: "Recipe name",
     rules: { required: true },
-    sx: styles.smallTextField,
+    sx: styles.textField,
   },
   {
     name: "ingredients",
@@ -57,7 +57,7 @@ const FORM_FIELDS: {
     rules: {
       required: true,
     },
-    sx: styles.bigTextField,
+    sx: styles.textField,
     placeholder: "Enter your ingredients",
     multiline: true,
   },
@@ -67,7 +67,7 @@ const FORM_FIELDS: {
     rules: {
       required: true,
     },
-    sx: styles.bigTextField,
+    sx: styles.textField,
     placeholder: "Enter the details of your recipe",
     multiline: true,
   },
@@ -119,7 +119,7 @@ const EditPost = (post?: PostAttributes) => {
           <ArrowBackIcon />
         </IconButton>
         <Typography sx={styles.headerText}>
-          {post ? "Edit your recipe" : "Create new recipe"}
+          {post?._id ? "Edit your recipe" : "Create new recipe"}
         </Typography>
       </Box>
       {/* TOOD add dropzone */}

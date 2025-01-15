@@ -26,7 +26,7 @@ const InputField = ({
   <TextField
     error={!!error}
     multiline={multiline}
-    sx={{ ...styles.textField, ...sx }}
+    sx={{ ...styles.textField(multiline), ...sx }}
     value={value}
     disabled={disabled}
     onChange={onChange}
