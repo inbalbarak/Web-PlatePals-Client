@@ -46,13 +46,7 @@ const styles = {
     marginBottom: 1,
   },
 
-  smallTextField: {
-    height: "10%",
-    width: "90%",
-  },
-
-  bigTextField: {
-    height: "20%",
+  textField: {
     width: "90%",
   },
 
