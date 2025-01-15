@@ -11,19 +11,22 @@ const InputField = ({
   placeholder,
   type = "text",
   disabled = false,
+  multiline,
 }: {
   sx?: SxProps;
   error?: FieldError;
-  value?: string | number | null;
+  value?: string | string[] | number | null;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   disabled?: boolean;
   type?: "number" | "text";
   showAdornment?: boolean;
+  multiline?: boolean;
 }) => (
   <TextField
     error={!!error}
-    sx={{ ...styles.textField, ...sx }}
+    multiline={multiline}
+    sx={{ ...styles.textField(multiline), ...sx }}
     value={value}
     disabled={disabled}
     onChange={onChange}

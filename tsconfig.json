@@ -42,6 +42,7 @@
       "constants/*": ["./src/constants/*"],
       "services/*": ["./src/services/*"],
       "components/*": ["./src/components/*"],
+      "pages/*": ["./src/pages/*"],
       "icons/*": ["./src/icons/*"]
     }
   }
