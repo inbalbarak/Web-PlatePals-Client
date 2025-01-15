@@ -7,4 +7,5 @@ export interface PostAttributes {
   averageRating?: number;
   ingredients: string;
   instructions: string;
+  createdAt?: string;
 }

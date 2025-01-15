@@ -9,16 +9,22 @@ interface PostsListProps {
 }
 
 const PostsList: FC<PostsListProps> = ({ posts }) => {
-  console.log("posts", posts);
   const createPost = (post: PostAttributes) => {
     const { title, ratingCount, averageRating, author } = post;
 
+    // TODO get recipe image from post
     return (
-      <Box key={post._id} sx={styles.post}>
+      <Box
+        key={post._id}
+        sx={styles.post}
+        onClick={() => {
+          // TODO navigate to post details page
+          console.log("navigate to post");
+        }}
+      >
         <CardMedia
           component="img"
           sx={styles.postImage}
-          // TODO query actual image
           image="/recipe-default.png"
         />
         <CardContent sx={styles.postContent}>

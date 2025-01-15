@@ -11,8 +11,6 @@ export default {
   },
   getAll: async (): Promise<PostAttributes[]> => {
     const { data } = await apiClient.get(baseUrl);
-
-    console.log(data);
     return data;
   },
 };

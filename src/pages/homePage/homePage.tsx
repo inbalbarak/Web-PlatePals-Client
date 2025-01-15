@@ -1,5 +1,5 @@
 import { chunk } from "lodash";
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import styles from "./homePage.style";
 import { useQuery } from "react-query";
 import { QUERY_KEYS } from "constants/queryKeys";
@@ -14,6 +14,7 @@ import {
   Typography,
 } from "@mui/material";
 import PostsList from "components/PostsList/PostsList";
+import { USERNAME } from "constants/localStorage";
 
 enum Sort {
   TOP = "TOP",
@@ -21,16 +22,54 @@ enum Sort {
 }
 
 const HomePage = () => {
-  const [activeTags, setActiveTags] = useState<String[]>([]);
+  const [activeTags, setActiveTags] = useState<Set<String>>(new Set());
   const [sort, setSort] = useState(Sort.TOP);
 
-  useEffect(() => {
-    console.log("activeTags", activeTags);
-  }, [activeTags]);
+  const { data: tags } = useQuery(QUERY_KEYS.TAGS, tagsService.getAll, {
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+  });
 
-  useEffect(() => {
-    console.log("activeTags", activeTags);
-  }, [sort]);
+  const { data: fetchedPosts } = useQuery(
+    QUERY_KEYS.POSTS,
+    postsService.getAll,
+    {
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    }
+  );
+
+  const computedPosts = useMemo(() => {
+    if (fetchedPosts) {
+      let filteredPosts = fetchedPosts;
+
+      if (activeTags.size) {
+        filteredPosts = fetchedPosts?.filter((post) =>
+          post.tags.some((tag) => activeTags.has(tag))
+        );
+      }
+
+      return filteredPosts?.sort((a, b) => {
+        if (sort === Sort.TOP && a.averageRating && b.averageRating) {
+          if (b.averageRating == a.averageRating) {
+            return (b.ratingCount ?? 0) - (a.ratingCount ?? 0);
+          }
+
+          return b.averageRating - a.averageRating;
+        }
+
+        if (sort === Sort.NEW && a.createdAt && b.createdAt) {
+          return (
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
+        }
+
+        return 0;
+      });
+    }
+  }, [fetchedPosts, activeTags, sort]);
 
   const handleChange = (_: React.MouseEvent<HTMLElement>, newSort: Sort) => {
     if (newSort !== null) {
@@ -44,19 +83,7 @@ const HomePage = () => {
     exclusive: true,
   };
 
-  const { data: tags } = useQuery(QUERY_KEYS.TAGS, tagsService.getAll, {
-    refetchOnReconnect: false,
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
-  });
-
-  const { data: posts } = useQuery(QUERY_KEYS.POSTS, postsService.getAll, {
-    refetchOnReconnect: false,
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
-  });
-
-  const name = "Michal";
+  const name = localStorage.getItem(USERNAME) ?? "";
 
   const sortButtons = Object.values(Sort).map((key) => {
     return (
@@ -66,10 +93,12 @@ const HomePage = () => {
     );
   });
 
+  // TODO get avatar image from user
+
   return (
     <Box sx={styles.root}>
       <Box sx={styles.header}>
-        <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+        <Avatar src="" />
         <Typography sx={styles.title}>Hello, {name}</Typography>
       </Box>
       <Box sx={{ width: "100%" }} key={name}>
@@ -78,18 +107,21 @@ const HomePage = () => {
             chunk(tags, 4).map((tagsArray: TagAttributes[], index) => (
               <Box sx={styles.tagsRow} key={index}>
                 {tagsArray.map((tag) => {
-                  const isSelected = activeTags?.includes(tag._id);
+                  const isSelected = activeTags?.has(tag.name);
 
                   return (
                     <Button
-                      key={`${tag._id}-${isSelected}`}
+                      key={`${tag.name}-${isSelected}`}
                       onClick={(_event) => {
-                        setActiveTags((currentTags) =>
-                          isSelected
-                            ? currentTags?.filter(
-                                (existingTag) => existingTag !== tag._id
-                              )
-                            : [...currentTags, tag._id]
+                        setActiveTags(
+                          (currentTags) =>
+                            new Set(
+                              isSelected
+                                ? Array.from(currentTags).filter(
+                                    (existingTag) => existingTag !== tag.name
+                                  )
+                                : [...currentTags, tag.name]
+                            )
                         );
                       }}
                       sx={styles.tag(isSelected)}
@@ -112,7 +144,7 @@ const HomePage = () => {
           {sortButtons}
         </ToggleButtonGroup>
       </Box>
-      {posts?.length && <PostsList posts={posts} />}
+      {!!computedPosts?.length && <PostsList posts={computedPosts} />}
     </Box>
   );
 };
