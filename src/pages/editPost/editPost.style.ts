@@ -9,6 +9,24 @@ const styles = {
     overflow: "hidden",
   },
 
+  header: {
+    display: "flex",
+    alignItems: "center",
+    marginTop: 1,
+  },
+
+  headerText: {
+    marginLeft: 2,
+    fontSize: 20,
+  },
+
+  backButton: {
+    borderRadius: "15px",
+    backgroundColor: colors.white,
+    padding: "5px",
+    marginLeft: 2,
+  },
+
   recipeBox: {
     height: "60%",
     width: "100%",

@@ -1,3 +1,11 @@
+import {
+  Box,
+  Button,
+  IconButton,
+  Snackbar,
+  SxProps,
+  Typography,
+} from "@mui/material";
 import { chunk } from "lodash";
 import { useState } from "react";
 import styles from "./editPost.style";
@@ -7,10 +15,10 @@ import { QUERY_KEYS } from "constants/queryKeys";
 import { useForm, Controller } from "react-hook-form";
 import { PostAttributes } from "src/interfaces/post.interface";
 import tagsService, { TagAttributes } from "services/tags.service";
-import { Box, Button, Snackbar, SxProps, Typography } from "@mui/material";
 import { upsert } from "services/posts.service";
 import { USERNAME } from "constants/localStorage";
-import { useNavigate } from "react-router-dom";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useLocation, useNavigate } from "react-router-dom";
 import { PATHS } from "constants/routes";
 
 export interface PostFormAttributes {
@@ -35,6 +43,7 @@ const FORM_FIELDS: {
   rules?: Record<string, unknown>;
   sx?: SxProps;
   placeholder?: string;
+  multiline?: boolean;
 }[] = [
   {
     name: "title",
@@ -50,6 +59,7 @@ const FORM_FIELDS: {
     },
     sx: styles.bigTextField,
     placeholder: "Enter your ingredients",
+    multiline: true,
   },
   {
     name: "instructions",
@@ -59,6 +69,7 @@ const FORM_FIELDS: {
     },
     sx: styles.bigTextField,
     placeholder: "Enter the details of your recipe",
+    multiline: true,
   },
   {
     name: "tags",
@@ -69,13 +80,13 @@ const FORM_FIELDS: {
 
 const EditPost = (post?: PostAttributes) => {
   const [banner, setBanner] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
   const { control, formState, setValue, getValues, watch } =
     useForm<PostFormAttributes>({
       defaultValues: post ?? defaultValues,
       mode: "all",
     });
-
-  const navigate = useNavigate();
 
   const watchedTags = watch("tags");
 
@@ -100,68 +111,82 @@ const EditPost = (post?: PostAttributes) => {
 
   return (
     <Box sx={styles.root}>
+      <Box sx={styles.header}>
+        <IconButton
+          sx={styles.backButton}
+          onClick={() => (location.key ? navigate(-1) : navigate(PATHS.HOME))}
+        >
+          <ArrowBackIcon />
+        </IconButton>
+        <Typography sx={styles.headerText}>
+          {post ? "Edit your recipe" : "Create new recipe"}
+        </Typography>
+      </Box>
       {/* TOOD add dropzone */}
       <Box sx={styles.recipeBox}>
         <Box sx={styles.innerDisplay}>
-          {FORM_FIELDS.map(({ name, rules, displayName, sx, placeholder }) => (
-            <Box key={name}>
-              <Typography sx={styles.title}>{displayName}</Typography>
-              <Controller
-                name={name}
-                control={control}
-                rules={rules}
-                render={({ field, fieldState: { error } }) =>
-                  name !== "tags" ? (
-                    <InputField
-                      error={error}
-                      sx={sx}
-                      value={field.value}
-                      onChange={field.onChange}
-                      placeholder={placeholder}
-                    />
-                  ) : (
-                    <Box sx={styles.tagsBox}>
-                      {tags?.length &&
-                        chunk(tags, 3).map(
-                          (tagsArray: TagAttributes[], index) => (
-                            <Box sx={styles.tagsRow} key={index}>
-                              {tagsArray.map((tag) => {
-                                const isSelected = watchedTags?.includes(
-                                  tag._id
-                                );
+          {FORM_FIELDS.map(
+            ({ name, rules, displayName, multiline, sx, placeholder }) => (
+              <Box key={name}>
+                <Typography sx={styles.title}>{displayName}</Typography>
+                <Controller
+                  name={name}
+                  control={control}
+                  rules={rules}
+                  render={({ field, fieldState: { error } }) =>
+                    name !== "tags" ? (
+                      <InputField
+                        error={error}
+                        sx={sx}
+                        value={field.value}
+                        onChange={field.onChange}
+                        placeholder={placeholder}
+                        multiline={multiline}
+                      />
+                    ) : (
+                      <Box sx={styles.tagsBox}>
+                        {tags?.length &&
+                          chunk(tags, 3).map(
+                            (tagsArray: TagAttributes[], index) => (
+                              <Box sx={styles.tagsRow} key={index}>
+                                {tagsArray.map((tag) => {
+                                  const isSelected = watchedTags?.includes(
+                                    tag._id
+                                  );
 
-                                return (
-                                  <Button
-                                    key={`${tag._id}-${isSelected}`}
-                                    onClick={(_event) => {
-                                      const currentTags =
-                                        getValues("tags") ?? [];
+                                  return (
+                                    <Button
+                                      key={`${tag._id}-${isSelected}`}
+                                      onClick={(_event) => {
+                                        const currentTags =
+                                          getValues("tags") ?? [];
 
-                                      setValue(
-                                        "tags",
-                                        isSelected
-                                          ? currentTags?.filter(
-                                              (existingTag) =>
-                                                existingTag !== tag._id
-                                            )
-                                          : [...currentTags, tag._id]
-                                      );
-                                    }}
-                                    sx={styles.tag(isSelected)}
-                                  >
-                                    {tag.name}
-                                  </Button>
-                                );
-                              })}
-                            </Box>
-                          )
-                        )}
-                    </Box>
-                  )
-                }
-              />
-            </Box>
-          ))}
+                                        setValue(
+                                          "tags",
+                                          isSelected
+                                            ? currentTags?.filter(
+                                                (existingTag) =>
+                                                  existingTag !== tag._id
+                                              )
+                                            : [...currentTags, tag._id]
+                                        );
+                                      }}
+                                      sx={styles.tag(isSelected)}
+                                    >
+                                      {tag.name}
+                                    </Button>
+                                  );
+                                })}
+                              </Box>
+                            )
+                          )}
+                      </Box>
+                    )
+                  }
+                />
+              </Box>
+            )
+          )}
         </Box>
       </Box>
       <Button
