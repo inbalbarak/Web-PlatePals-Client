@@ -40,10 +40,16 @@ const styles = {
     margin: "10px 0px",
   },
 
+  sortButtonsGroupContainer: {
+    width: "100%",
+    display: "flex",
+    justifyContent: "center",
+  },
+
   sortButtonsGroup: {
     border: `1px solid ${colors.graniteGray}`,
     borderRadius: "20px",
-    overflow: "hidden",
+    overflowX: "hidden",
   },
 
   sortButton: {

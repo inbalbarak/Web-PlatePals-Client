@@ -3,7 +3,8 @@ export interface PostAttributes {
   title: string;
   author: string;
   tags: string[];
-  rating?: number;
+  ratingCount?: number;
+  averageRating?: number;
   ingredients: string;
   instructions: string;
 }

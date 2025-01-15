@@ -8,7 +8,7 @@ const styles = {
     gap: "10px",
     width: "100%",
     marginTop: "20px",
-    flexWrap: "wrap",
+    overflowX: "scroll",
   },
   post: {
     display: "flex",

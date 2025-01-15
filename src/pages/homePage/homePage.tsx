@@ -4,6 +4,7 @@ import styles from "./homePage.style";
 import { useQuery } from "react-query";
 import { QUERY_KEYS } from "constants/queryKeys";
 import tagsService, { TagAttributes } from "services/tags.service";
+import postsService from "services/posts.service";
 import {
   Avatar,
   Box,
@@ -44,6 +45,12 @@ const HomePage = () => {
   };
 
   const { data: tags } = useQuery(QUERY_KEYS.TAGS, tagsService.getAll, {
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+  });
+
+  const { data: posts } = useQuery(QUERY_KEYS.POSTS, postsService.getAll, {
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
@@ -95,15 +102,17 @@ const HomePage = () => {
             ))}
         </Box>
       </Box>
-      <ToggleButtonGroup
-        sx={styles.sortButtonsGroup}
-        size="large"
-        {...control}
-        aria-label="Large sizes"
-      >
-        {sortButtons}
-      </ToggleButtonGroup>
-      <PostsList />
+      <Box sx={styles.sortButtonsGroupContainer}>
+        <ToggleButtonGroup
+          sx={styles.sortButtonsGroup}
+          size="large"
+          {...control}
+          aria-label="Large sizes"
+        >
+          {sortButtons}
+        </ToggleButtonGroup>
+      </Box>
+      {posts?.length && <PostsList posts={posts} />}
     </Box>
   );
 };
