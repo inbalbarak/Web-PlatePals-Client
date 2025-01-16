@@ -4,6 +4,7 @@ export interface PostAttributes {
   author: string;
   tags: string[];
   ratingCount?: number;
+  imageUrl?: string;
   averageRating?: number;
   ingredients: string;
   instructions: string;
