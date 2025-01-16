@@ -28,6 +28,12 @@ const styles = {
   header: {
     display: "flex",
     flexDirection: "row",
+    justifyContent: "space-between",
+  },
+
+  headerDetails: {
+    display: "flex",
+    flexDirection: "row",
     alignItems: "center",
     gap: "10px",
     fontWeight: "600",

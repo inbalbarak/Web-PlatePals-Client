@@ -1,11 +1,15 @@
 import { chunk } from "lodash";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import styles from "./recipePage.style";
 import { useQuery } from "react-query";
 import { QUERY_KEYS } from "constants/queryKeys";
 import postsService from "services/posts.service";
 import { Box, CardMedia } from "@mui/material";
-import { Star as StarIcon } from "@mui/icons-material";
+import {
+  Star as StarIcon,
+  Bookmark as BookmarkIcon,
+  BookmarkBorder as BookmarkBorderIcon,
+} from "@mui/icons-material";
 import { useParams } from "react-router-dom";
 import { convertISODateToString } from "utils/dates";
 import RecipeSection from "components/RecipeSection";
@@ -18,6 +22,12 @@ const RecipePage = () => {
   });
 
   const { id: postId } = useParams();
+
+  const [isSaved, setIsSaved] = useState(false);
+
+  useEffect(() => {
+    // TODO: update isSaved by fetching from user
+  }, []);
 
   const post = useMemo(() => {
     return posts?.find((post) => post._id === postId);
@@ -44,14 +54,25 @@ const RecipePage = () => {
       <CardMedia
         component="img"
         sx={styles.recipeImage}
-        image="/recipe-default.png"
+        image={imageUrl ?? "/recipe-default.png"}
       />
       <Box sx={styles.content}>
         <Box sx={styles.header}>
-          <Box sx={styles.title}>{title}</Box>
-          <Box sx={styles.rating}>
-            <StarIcon sx={styles.ratingIcon} />
-            {averageRating}
+          <Box sx={styles.headerDetails}>
+            <Box sx={styles.title}>{title}</Box>
+            <Box sx={styles.rating}>
+              <StarIcon sx={styles.ratingIcon} />
+              {averageRating}
+            </Box>
+          </Box>
+          <Box
+            sx={styles.headerDetails}
+            onClick={() => {
+              //TODO update user saved
+              setIsSaved(!isSaved);
+            }}
+          >
+            {isSaved ? <BookmarkIcon /> : <BookmarkBorderIcon />}
           </Box>
         </Box>
         <Box sx={styles.subHeader}>
@@ -74,7 +95,7 @@ const RecipePage = () => {
         </Box>
         <Box sx={styles.contentSections}>
           <RecipeSection title="Ingredients" content={ingredients} />
-          <RecipeSection title="Instructions" content={instructions} />
+          <RecipeSection title="How-To" content={instructions} />
         </Box>
       </Box>
     </Box>
