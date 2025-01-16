@@ -5,7 +5,6 @@ const styles = {
     width: "100vw",
     height: "100vh",
     backgroundColor: colors.white,
-    overflow: "hidden",
     display: "flex",
     alignItems: "center",
     flexDirection: "column",
@@ -14,7 +13,7 @@ const styles = {
 
   recipeImage: {
     width: "100%",
-    height: "40vh",
+    height: "30vh",
   },
 
   content: {
@@ -61,7 +60,7 @@ const styles = {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    gap: "10px",
+    gap: "6px",
     color: colors.graniteGray,
     fontSize: "0.875rem",
   },
@@ -77,40 +76,12 @@ const styles = {
     gap: "5px",
   },
 
-  // sortButtonsGroupContainer: {
-  //   width: "100%",
-  //   display: "flex",
-  //   justifyContent: "center",
-  // },
-
-  // sortButtonsGroup: {
-  //   border: `1px solid ${colors.graniteGray}`,
-  //   borderRadius: "20px",
-  //   overflowX: "hidden",
-  // },
-
-  // sortButton: {
-  //   padding: "5px 30px",
-
-  //   "&:focus": {
-  //     outline: "none",
-  //   },
-
-  //   "&.MuiToggleButton-root:hover": {
-  //     border: "1px solid rgba(0, 0, 0, 0.12)",
-  //   },
-
-  //   "&.Mui-selected": {
-  //     border: "1px solid transparent",
-  //     backgroundColor: colors.mainOrange,
-  //     color: colors.white,
-  //   },
-
-  //   "&.Mui-selected:hover": {
-  //     border: "1px solid transparent",
-  //     backgroundColor: colors.mainOrange,
-  //   },
-  // },
+  contentSections: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    gap: "20px",
+  },
 
   tag: {
     color: colors.mainOrange,

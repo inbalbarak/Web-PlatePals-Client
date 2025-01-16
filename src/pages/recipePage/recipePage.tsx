@@ -8,6 +8,7 @@ import { Box, CardMedia } from "@mui/material";
 import { Star as StarIcon } from "@mui/icons-material";
 import { useParams } from "react-router-dom";
 import { convertISODateToString } from "utils/dates";
+import RecipeSection from "components/RecipeSection";
 
 const RecipePage = () => {
   const { data: posts } = useQuery(QUERY_KEYS.POSTS, postsService.getAll, {
@@ -54,6 +55,7 @@ const RecipePage = () => {
           </Box>
         </Box>
         <Box sx={styles.subHeader}>
+          <Box sx={{ fontWeight: "600" }}>{author}</Box>
           {createdAt && <Box>{convertISODateToString(createdAt)}</Box>}
         </Box>
         <Box sx={{ width: "100%" }}>
@@ -69,6 +71,10 @@ const RecipePage = () => {
                 </Box>
               ))}
           </Box>
+        </Box>
+        <Box sx={styles.contentSections}>
+          <RecipeSection title="Ingredients" content={ingredients} />
+          <RecipeSection title="Instructions" content={instructions} />
         </Box>
       </Box>
     </Box>
