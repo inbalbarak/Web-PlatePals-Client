@@ -10,7 +10,7 @@ interface PostsListProps {
 
 const PostsList: FC<PostsListProps> = ({ posts }) => {
   const createPost = (post: PostAttributes) => {
-    const { title, ratingCount, averageRating, author } = post;
+    const { title, ratingCount, averageRating, author, imageUrl } = post;
 
     // TODO get recipe image from post
     return (
@@ -25,7 +25,7 @@ const PostsList: FC<PostsListProps> = ({ posts }) => {
         <CardMedia
           component="img"
           sx={styles.postImage}
-          image="/recipe-default.png"
+          image={imageUrl ?? "/recipe-default.png"}
         />
         <CardContent sx={styles.postContent}>
           <Typography component="div" variant="h6">

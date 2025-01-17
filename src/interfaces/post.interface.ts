@@ -5,6 +5,7 @@ export interface PostAttributes {
   tags: string[];
   ratingCount?: number;
   averageRating?: number;
+  imageUrl?: string;
   ingredients: string;
   instructions: string;
   createdAt?: string;
