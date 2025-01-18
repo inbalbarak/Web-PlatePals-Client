@@ -8,7 +8,9 @@ const styles = {
     gap: "10px",
     width: "100%",
     marginTop: "20px",
-    overflowX: "scroll",
+    overflowY: "auto",
+    scrollbarWidth: "thin",
+    paddingBottom: "calc(8vh + 10px)",
   },
   post: {
     display: "flex",

@@ -22,7 +22,7 @@ const PostsList: FC<PostsListProps> = ({ posts }) => {
         key={post._id}
         sx={styles.post}
         onClick={() => {
-          navigate(`/${PATHS.RECIPE}/${post._id}`);
+          navigate(`${PATHS.RECIPE}/${post._id}`);
         }}
       >
         <CardMedia
@@ -56,7 +56,7 @@ const PostsList: FC<PostsListProps> = ({ posts }) => {
     );
   };
 
-  return <List sx={styles.root}>{posts?.map((post) => createPost(post))}</List>;
+  return <Box sx={styles.root}>{posts?.map((post) => createPost(post))}</Box>;
 };
 
 export default PostsList;

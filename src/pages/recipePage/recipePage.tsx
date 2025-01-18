@@ -13,6 +13,7 @@ import {
 import { useParams } from "react-router-dom";
 import { convertISODateToString } from "utils/dates";
 import RecipeSection from "components/RecipeSection";
+import BottomNavbar from "components/BottomNavbar";
 
 const RecipePage = () => {
   const { data: posts } = useQuery(QUERY_KEYS.POSTS, postsService.getAll, {
@@ -77,12 +78,12 @@ const RecipePage = () => {
         </Box>
         <Box sx={{ width: "100%" }}>
           <Box sx={styles.tagsBox}>
-            {post?.tags?.length &&
+            {tags?.length &&
               chunk(tags, 4).map((tagsArray, index) => (
                 <Box sx={styles.tagsRow} key={index}>
                   {tagsArray.map((tag) => (
-                    <Box key={tag} sx={styles.tag}>
-                      {tag}
+                    <Box key={tag._id} sx={styles.tag}>
+                      {tag.name}
                     </Box>
                   ))}
                 </Box>
@@ -94,6 +95,7 @@ const RecipePage = () => {
           <RecipeSection title="How-To" content={instructions} />
         </Box>
       </Box>
+      <BottomNavbar />
     </Box>
   ) : (
     <></>

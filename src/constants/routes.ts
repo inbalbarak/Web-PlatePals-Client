@@ -29,17 +29,17 @@ export const ROUTES: RouteType[] = [
     element: RecipePage,
   },
   {
-    path: "/edit",
+    path: "/edit/:id?",
     name: "עריכת פוסט",
     element: EditPost,
   },
 ];
 
 export const PATHS = {
-  CHAT: "chat",
-  MY_RECIPES: "my-recipes",
-  POST: "post",
-  RECIPE: "recipe",
-  HOME: "home",
-  PERSONAL_INFO: "personal-info",
+  CHAT: "/chat",
+  MY_RECIPES: "/my-recipes",
+  POST: "/post",
+  RECIPE: "/recipe",
+  HOME: "/home",
+  PERSONAL_INFO: "/personal-info",
 };

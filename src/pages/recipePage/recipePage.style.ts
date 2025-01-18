@@ -3,12 +3,14 @@ import { colors } from "constants/styles";
 const styles = {
   root: {
     width: "100vw",
-    height: "100vh",
+    height: "100%",
+    boxSizing: "border-box",
     backgroundColor: colors.white,
     display: "flex",
     alignItems: "center",
     flexDirection: "column",
     justifyContent: "top",
+    paddingBottom: "calc(8vh)",
   },
 
   recipeImage: {

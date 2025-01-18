@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import PostsList from "components/PostsList/PostsList";
 import { USERNAME } from "constants/localStorage";
+import BottomNavbar from "components/BottomNavbar";
 
 enum Sort {
   TOP = "TOP",
@@ -47,7 +48,7 @@ const HomePage = () => {
 
       if (activeTags.size) {
         filteredPosts = fetchedPosts?.filter((post) =>
-          post.tags.some((tag) => activeTags.has(tag))
+          post.tags.some((tag) => activeTags.has(tag.name))
         );
       }
 
@@ -145,6 +146,7 @@ const HomePage = () => {
         </ToggleButtonGroup>
       </Box>
       {!!computedPosts?.length && <PostsList posts={computedPosts} />}
+      <BottomNavbar />
     </Box>
   );
 };
