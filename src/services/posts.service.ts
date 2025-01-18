@@ -4,7 +4,7 @@ import {
   PostDTOAttributes,
 } from "src/interfaces/post.interface";
 
-const baseUrl = "/post";
+const baseUrl = "/posts";
 
 export default {
   upsert: async (post: PostDTOAttributes) => {
