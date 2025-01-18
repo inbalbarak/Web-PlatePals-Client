@@ -48,6 +48,10 @@ const styles = {
     lineHeight: 1,
     color: "text.secondary",
   },
+
+  postAuthorText: {
+    color: "text.secondary",
+  },
 };
 
 export default styles;

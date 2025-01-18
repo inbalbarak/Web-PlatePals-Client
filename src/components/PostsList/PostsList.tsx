@@ -45,9 +45,9 @@ const PostsList: FC<PostsListProps> = ({ posts }) => {
             </Typography>
           </Box>
           <Typography
+            sx={styles.postAuthorText}
             variant="subtitle1"
             component="div"
-            sx={{ color: "text.secondary" }}
           >
             {author}
           </Typography>

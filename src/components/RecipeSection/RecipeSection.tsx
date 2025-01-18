@@ -4,7 +4,7 @@ import { Box } from "@mui/material";
 
 interface RecipeSectionProps {
   title: string;
-  content: string;
+  content?: string;
 }
 
 const RecipeSection: FC<RecipeSectionProps> = ({ title, content }) => {

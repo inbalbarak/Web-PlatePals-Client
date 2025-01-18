@@ -33,10 +33,6 @@ const RecipePage = () => {
     return posts?.find((post) => post._id === postId);
   }, [posts, postId]);
 
-  if (!post) {
-    return <></>;
-  }
-
   const {
     title,
     tags,
@@ -47,9 +43,9 @@ const RecipePage = () => {
     averageRating,
     ratingCount,
     createdAt,
-  } = post;
+  } = post ?? {};
 
-  return (
+  return post ? (
     <Box sx={styles.root}>
       <CardMedia
         component="img"
@@ -99,6 +95,8 @@ const RecipePage = () => {
         </Box>
       </Box>
     </Box>
+  ) : (
+    <></>
   );
 };
 
