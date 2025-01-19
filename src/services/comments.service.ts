@@ -13,4 +13,14 @@ export default {
     const { data } = await apiClient.get(`${baseUrl}/post/${id}`);
     return data;
   },
+
+  getByPostIdUserId: async (
+    postId: string,
+    userId: string
+  ): Promise<PostAttributes[]> => {
+    const { data } = await apiClient.get(
+      `${baseUrl}/post/${postId}/user/${userId}`
+    );
+    return data;
+  },
 };

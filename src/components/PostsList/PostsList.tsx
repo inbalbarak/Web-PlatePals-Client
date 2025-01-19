@@ -1,4 +1,4 @@
-import { Box, CardContent, CardMedia, List, Typography } from "@mui/material";
+import { Box, CardContent, CardMedia, Typography } from "@mui/material";
 import { Star as StarIcon } from "@mui/icons-material";
 import { PostAttributes } from "src/interfaces/post.interface";
 import styles from "./PostsList.style";
