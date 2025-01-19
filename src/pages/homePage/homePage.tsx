@@ -14,8 +14,9 @@ import {
   Typography,
 } from "@mui/material";
 import PostsList from "components/PostsList/PostsList";
-import { USERNAME } from "constants/localStorage";
 import BottomNavbar from "components/BottomNavbar";
+import usersService from "services/usersService";
+import { ID } from "constants/localStorage";
 
 enum Sort {
   TOP = "TOP",
@@ -36,6 +37,19 @@ const HomePage = () => {
     QUERY_KEYS.POSTS,
     postsService.getAll,
     {
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    }
+  );
+
+  const userId = localStorage.getItem(ID);
+
+  const { data: user } = useQuery(
+    QUERY_KEYS.USER,
+    () => usersService.getUserById(userId ?? ""),
+    {
+      enabled: !!userId,
       refetchOnReconnect: false,
       refetchOnWindowFocus: false,
       refetchOnMount: false,
@@ -84,7 +98,7 @@ const HomePage = () => {
     exclusive: true,
   };
 
-  const username = localStorage.getItem(USERNAME) ?? "";
+  const username = user?.username;
 
   const sortButtons = Object.values(Sort).map((key) => {
     return (

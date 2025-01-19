@@ -49,7 +49,7 @@ const PostsList: FC<PostsListProps> = ({ posts }) => {
             variant="subtitle1"
             component="div"
           >
-            {author}
+            {author.username}
           </Typography>
         </CardContent>
       </Box>

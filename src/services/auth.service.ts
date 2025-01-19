@@ -2,6 +2,7 @@ import { UserAttributes } from "src/interfaces/user.interface";
 import apiClient from "./axiosInstance";
 
 type tTokens = {
+  _id: string;
   accessToken: string;
   refreshToken: string;
 };

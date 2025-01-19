@@ -1,6 +1,11 @@
 import { UserAttributes } from "src/interfaces/user.interface";
 import apiClient from "./axiosInstance";
 
-export const createUser = async (user: UserAttributes) => {
-  return await apiClient.post("/users", user);
+const baseUrl = "/users";
+
+export default {
+  getUserById: async (id: string): Promise<UserAttributes> => {
+    const { data } = await apiClient.get(`${baseUrl}/${id}`);
+    return data;
+  },
 };

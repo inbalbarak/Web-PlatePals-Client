@@ -13,13 +13,10 @@ import { useQuery } from "react-query";
 import InputField from "components/InputField";
 import { QUERY_KEYS } from "constants/queryKeys";
 import { useForm, Controller } from "react-hook-form";
-import {
-  PostAttributes,
-  PostDTOAttributes,
-} from "src/interfaces/post.interface";
+import { PostDTOAttributes } from "src/interfaces/post.interface";
 import tagsService, { TagAttributes } from "services/tags.service";
 import postsService from "services/posts.service";
-import { USERNAME } from "constants/localStorage";
+import { ID } from "constants/localStorage";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { PATHS } from "constants/routes";
@@ -122,7 +119,7 @@ const EditPost = () => {
     try {
       await postsService.upsert({
         ...getValues(),
-        author: localStorage.getItem(USERNAME),
+        author: localStorage.getItem(ID),
       } as PostDTOAttributes);
 
       navigate(PATHS.HOME);

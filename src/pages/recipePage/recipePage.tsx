@@ -14,6 +14,7 @@ import { useParams } from "react-router-dom";
 import { convertISODateToString } from "utils/dates";
 import RecipeSection from "components/RecipeSection";
 import BottomNavbar from "components/BottomNavbar";
+import ReviewSection from "components/ReviewSection";
 
 const RecipePage = () => {
   const { data: posts } = useQuery(QUERY_KEYS.POSTS, postsService.getAll, {
@@ -35,6 +36,7 @@ const RecipePage = () => {
   }, [posts, postId]);
 
   const {
+    _id,
     title,
     tags,
     imageUrl,
@@ -73,7 +75,7 @@ const RecipePage = () => {
           </Box>
         </Box>
         <Box sx={styles.subHeader}>
-          <Box sx={{ fontWeight: "600" }}>{author}</Box>
+          <Box sx={{ fontWeight: "600" }}>{author?.username}</Box>
           {createdAt && <Box>{convertISODateToString(createdAt)}</Box>}
         </Box>
         <Box sx={{ width: "100%" }}>
@@ -94,6 +96,7 @@ const RecipePage = () => {
           <RecipeSection title="Ingredients" content={ingredients} />
           <RecipeSection title="How-To" content={instructions} />
         </Box>
+        {_id && <ReviewSection postId={_id} />}
       </Box>
       <BottomNavbar />
     </Box>
