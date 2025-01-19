@@ -27,7 +27,7 @@ const ReviewSection: FC<ReviewSectionProps> = ({ postId }) => {
         .create({
           postId,
           content: review,
-          rating,
+          rating: rating,
           author: id,
         })
         .then(() => {
