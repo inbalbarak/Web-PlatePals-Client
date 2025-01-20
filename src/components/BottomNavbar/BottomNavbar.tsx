@@ -9,8 +9,8 @@ import PersonalInfo from "icons/PersonalInfo";
 import { useNavigate } from "react-router-dom";
 import { BottomNavigation, BottomNavigationAction } from "@mui/material";
 
-const BottomNavbar = () => {
-  const [activeItem, setActiveItem] = useState(PATHS.MAIN);
+const BottomNavbar = ({ selectedPath }: { selectedPath?: string }) => {
+  const [activeItem, setActiveItem] = useState(selectedPath ?? PATHS.MAIN);
   const navigate = useNavigate();
 
   const routes = useMemo(

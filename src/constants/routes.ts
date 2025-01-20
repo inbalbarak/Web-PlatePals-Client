@@ -1,4 +1,5 @@
 import EditPost from "pages/editPost";
+import MyRecipes from "pages/myRecipes";
 import Login from "../pages/index.ts/login";
 
 export interface RouteType {
@@ -18,8 +19,13 @@ export const UNAUTHENTICATED_ROUTES: RouteType[] = [
 export const ROUTES: RouteType[] = [
   {
     path: "/edit",
-    name: "עריכת פוסט",
+    name: "edit post",
     element: EditPost,
+  },
+  {
+    path: "/my-recipes",
+    name: "my recipes",
+    element: MyRecipes,
   },
 ];
 
