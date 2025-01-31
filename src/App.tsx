@@ -5,6 +5,7 @@ import { ROUTES, RouteType, UNAUTHENTICATED_ROUTES } from "./constants/routes";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ACCESS_TOKEN } from "constants/localStorage";
+import BottomNavbar from "components/BottomNavbar";
 
 function App() {
   const queryClient = new QueryClient();
@@ -34,6 +35,7 @@ function App() {
                   <Route key={path} path={path} element={<Component />} />
                 ))}
             </Routes>
+            <BottomNavbar />
           </Box>
         </Router>
       </Box>
