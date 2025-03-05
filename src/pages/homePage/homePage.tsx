@@ -22,7 +22,7 @@ enum Sort {
 }
 
 const HomePage = () => {
-  const [activeTags, setActiveTags] = useState<Set<String>>(new Set());
+  const [activeTags, setActiveTags] = useState<Set<string>>(new Set());
   const [sort, setSort] = useState(Sort.TOP);
 
   const { data: tags } = useQuery(QUERY_KEYS.TAGS, tagsService.getAll, {

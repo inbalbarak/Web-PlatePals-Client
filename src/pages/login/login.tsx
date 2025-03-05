@@ -3,7 +3,7 @@ import {
   REFRESH_TOKEN,
   TOKEN_TIMESTAMP,
   USER_ID,
-  // USERNAME,
+  USERNAME,
 } from "constants/localStorage";
 import { useEffect, useState } from "react";
 import styles from "./login.style";
@@ -130,6 +130,7 @@ const Login = () => {
                 localStorage.setItem(ACCESS_TOKEN, token.accessToken);
                 localStorage.setItem(REFRESH_TOKEN, token.refreshToken);
                 localStorage.setItem(USER_ID, token.userId);
+                localStorage.setItem(USERNAME, getValues("username"));
                 localStorage.setItem(TOKEN_TIMESTAMP, new Date().toString());
 
                 window.dispatchEvent(new Event("storage"));
@@ -160,8 +161,7 @@ const Login = () => {
                     localStorage.setItem(ACCESS_TOKEN, token.accessToken);
                     localStorage.setItem(REFRESH_TOKEN, token.refreshToken);
                     localStorage.setItem(USER_ID, token.userId);
-
-                    // localStorage.setItem(USERNAME, getValues("username"));
+                    localStorage.setItem(USERNAME, getValues("username"));
                     localStorage.setItem(
                       TOKEN_TIMESTAMP,
                       new Date().toString()

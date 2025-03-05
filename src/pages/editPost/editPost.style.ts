@@ -68,9 +68,8 @@ const styles = {
     color: colors.white,
     borderRadius: "20px",
     width: "85vw",
-    position: "absolute",
-    bottom: 5,
-    right: "8%",
+    margin: "30px auto",
+    display: "block",
   },
 
   tag: (isSelected: boolean) => ({

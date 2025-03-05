@@ -16,7 +16,7 @@ import { useForm, Controller } from "react-hook-form";
 import { PostAttributes } from "src/interfaces/post.interface";
 import tagsService, { TagAttributes } from "services/tags.service";
 import postsService from "services/posts.service";
-import { USERNAME } from "constants/localStorage";
+import { USER_ID } from "constants/localStorage";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useLocation, useNavigate } from "react-router-dom";
 import { PATHS } from "constants/routes";
@@ -100,7 +100,7 @@ const EditPost = (post?: PostAttributes) => {
     try {
       await postsService.upsert({
         ...getValues(),
-        author: localStorage.getItem(USERNAME) ?? "",
+        author: localStorage.getItem(USER_ID) ?? "",
       } as PostAttributes);
 
       navigate(PATHS.HOME);
@@ -188,22 +188,22 @@ const EditPost = (post?: PostAttributes) => {
             )
           )}
         </Box>
+        <Button
+          sx={styles.actionButton}
+          disabled={!formState.isValid}
+          onClick={() => {
+            void (async () => {
+              try {
+                onSave();
+              } catch (_err) {
+                setBanner(true);
+              }
+            })();
+          }}
+        >
+          Save
+        </Button>
       </Box>
-      <Button
-        sx={styles.actionButton}
-        disabled={!formState.isValid}
-        onClick={() => {
-          void (async () => {
-            try {
-              onSave();
-            } catch (_err) {
-              setBanner(true);
-            }
-          })();
-        }}
-      >
-        Save
-      </Button>
       <Snackbar
         open={banner}
         autoHideDuration={5000}

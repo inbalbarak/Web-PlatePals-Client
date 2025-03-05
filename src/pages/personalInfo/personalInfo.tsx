@@ -14,7 +14,7 @@ import usersService from "services/usersService";
 import { USER_ID } from "constants/localStorage";
 import { ArrowBack } from "@mui/icons-material";
 import PersonIcon from "@mui/icons-material/Person";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { PATHS } from "constants/routes";
 import { useQueryClient } from "react-query";
@@ -60,6 +60,10 @@ const PersonalInfo = () => {
     }
   );
 
+  useEffect(() => {
+    setUpdatedUsername(user?.username ?? "");
+  }, [user]);
+
   const { mutate: updateUser } = useMutation(
     QUERY_KEYS.UPDATE_USER,
     async (data: { _id: string; username: string }) =>
@@ -100,7 +104,7 @@ const PersonalInfo = () => {
                 ? setEditMode(false)
                 : location.key
                 ? navigate(-1)
-                : navigate(PATHS.MAIN)
+                : navigate(PATHS.HOME)
             }
           >
             <ArrowBack />

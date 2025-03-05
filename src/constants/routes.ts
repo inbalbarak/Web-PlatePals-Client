@@ -24,12 +24,12 @@ export const ROUTES: RouteType[] = [
     element: HomePage,
   },
   {
-    path: "/edit",
+    path: "/post",
     name: "עריכת פוסט",
     element: EditPost,
   },
   {
-    path: "/personalInfo",
+    path: "/personal-info",
     name: "פרטים אישיים",
     element: PersonalInfo,
   },

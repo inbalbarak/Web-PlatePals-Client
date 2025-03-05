@@ -10,7 +10,11 @@ import { useNavigate } from "react-router-dom";
 import { BottomNavigation, BottomNavigationAction } from "@mui/material";
 
 const BottomNavbar = () => {
-  const [activeItem, setActiveItem] = useState(PATHS.HOME);
+  const [activeItem, setActiveItem] = useState(
+    window.location.pathname !== PATHS.HOME
+      ? window.location.pathname
+      : PATHS.HOME
+  );
   const navigate = useNavigate();
 
   const routes = useMemo(
