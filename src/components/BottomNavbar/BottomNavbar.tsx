@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { BottomNavigation, BottomNavigationAction } from "@mui/material";
 
 const BottomNavbar = ({ selectedPath }: { selectedPath?: string }) => {
-  const [activeItem, setActiveItem] = useState(selectedPath ?? PATHS.MAIN);
+  const [activeItem, setActiveItem] = useState(selectedPath ?? PATHS.HOME);
   const navigate = useNavigate();
 
   const routes = useMemo(
@@ -31,7 +31,7 @@ const BottomNavbar = ({ selectedPath }: { selectedPath?: string }) => {
         iconFill: <Post sx={styles.icon} />,
       },
       {
-        value: PATHS.MAIN,
+        value: PATHS.HOME,
         icon: <Home sx={styles.icon} />,
         iconFill: <Home selected sx={styles.icon} />,
       },
@@ -46,7 +46,7 @@ const BottomNavbar = ({ selectedPath }: { selectedPath?: string }) => {
 
   const handleItemChange = (_event: React.SyntheticEvent, newVal: string) => {
     setActiveItem(newVal);
-    navigate(newVal);
+    navigate(`/${newVal}`);
   };
 
   return (
