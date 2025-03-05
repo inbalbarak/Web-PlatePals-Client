@@ -13,6 +13,8 @@ import { FC } from "react";
 import TrashBin from "icons/TrashBin";
 import postsService from "services/posts.service";
 import Pencil from "icons/Pencil";
+import { useNavigate } from "react-router-dom";
+import { PATHS } from "constants/routes";
 
 interface PostsListProps {
   posts: PostAttributes[];
@@ -20,6 +22,8 @@ interface PostsListProps {
 }
 
 const PostsList: FC<PostsListProps> = ({ posts, editable }) => {
+  const navigate = useNavigate();
+
   const createPost = (post: PostAttributes) => {
     const { title, ratingCount, averageRating, author, imageUrl } = post;
 
@@ -29,8 +33,7 @@ const PostsList: FC<PostsListProps> = ({ posts, editable }) => {
         key={post._id}
         sx={styles.post}
         onClick={() => {
-          // TODO navigate to post details page
-          console.log("navigate to post");
+          navigate(`${PATHS.RECIPE}/${post._id}`);
         }}
       >
         <CardMedia
@@ -53,9 +56,9 @@ const PostsList: FC<PostsListProps> = ({ posts, editable }) => {
             </Typography>
           </Box>
           <Typography
+            sx={styles.postAuthorText}
             variant="subtitle1"
             component="div"
-            sx={{ color: "text.secondary" }}
           >
             {author}
           </Typography>
@@ -84,7 +87,7 @@ const PostsList: FC<PostsListProps> = ({ posts, editable }) => {
     );
   };
 
-  return <List sx={styles.root}>{posts?.map((post) => createPost(post))}</List>;
+  return <Box sx={styles.root}>{posts?.map((post) => createPost(post))}</Box>;
 };
 
 export default PostsList;

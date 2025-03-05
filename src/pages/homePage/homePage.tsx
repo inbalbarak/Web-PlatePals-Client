@@ -49,7 +49,7 @@ const HomePage = () => {
 
       if (activeTags.size) {
         filteredPosts = fetchedPosts?.filter((post) =>
-          post.tags.some((tag) => activeTags.has(tag))
+          post.tags.some((tag) => activeTags.has(tag.name))
         );
       }
 
@@ -85,7 +85,7 @@ const HomePage = () => {
     exclusive: true,
   };
 
-  const name = localStorage.getItem(USERNAME) ?? "";
+  const username = localStorage.getItem(USERNAME) ?? "";
 
   const sortButtons = Object.values(Sort).map((key) => {
     return (
@@ -101,9 +101,9 @@ const HomePage = () => {
     <Box sx={styles.root}>
       <Box sx={styles.header}>
         <Avatar src="" />
-        <Typography sx={styles.title}>Hello, {name}</Typography>
+        <Typography sx={styles.title}>Hello, {username}</Typography>
       </Box>
-      <Box sx={{ width: "100%" }} key={name}>
+      <Box sx={{ width: "100%" }} key={username}>
         <Box sx={styles.tagsBox}>
           {tags?.length &&
             chunk(tags, 4).map((tagsArray: TagAttributes[], index) => (
