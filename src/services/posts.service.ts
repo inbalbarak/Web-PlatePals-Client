@@ -16,8 +16,8 @@ export default {
     const { data } = await apiClient.get(baseUrl);
     return data;
   },
-  getByAuthor: async (userId: string) => {
-    const { data } = await apiClient.get(`${baseUrl}/author/${userId}`);
+  getByAuthor: async () => {
+    const { data } = await apiClient.get(`${baseUrl}/user/`);
     return data;
   },
   delete: async (postId: string) => {

@@ -3,7 +3,6 @@ import {
   CardContent,
   CardMedia,
   IconButton,
-  List,
   Typography,
 } from "@mui/material";
 import { Star as StarIcon } from "@mui/icons-material";
@@ -15,13 +14,17 @@ import postsService from "services/posts.service";
 import Pencil from "icons/Pencil";
 import { useNavigate } from "react-router-dom";
 import { PATHS } from "constants/routes";
+import { RefetchOptions, RefetchQueryFilters } from "react-query";
 
 interface PostsListProps {
   posts: PostAttributes[];
   editable?: boolean;
+  refetch?: <TPageData>(
+    options?: RefetchOptions & RefetchQueryFilters<TPageData>
+  ) => Promise<any>;
 }
 
-const PostsList: FC<PostsListProps> = ({ posts, editable }) => {
+const PostsList: FC<PostsListProps> = ({ posts, editable, refetch }) => {
   const navigate = useNavigate();
 
   const createPost = (post: PostAttributes) => {
@@ -55,32 +58,37 @@ const PostsList: FC<PostsListProps> = ({ posts, editable }) => {
               {`${averageRating} | ${ratingCount} Reviews`}
             </Typography>
           </Box>
-          <Typography
-            sx={styles.postAuthorText}
-            variant="subtitle1"
-            component="div"
-          >
-            {author}
-          </Typography>
+          {!editable && (
+            <Typography
+              sx={styles.postAuthorText}
+              variant="subtitle1"
+              component="div"
+            >
+              {author}
+            </Typography>
+          )}
 
           {editable && (
-            <>
+            <Box sx={styles.editableIconsBox}>
               <IconButton
-                onClick={() => {
+                onClick={(event) => {
+                  event.stopPropagation();
                   postsService.delete(post._id ?? "");
+                  refetch?.();
                 }}
               >
-                <TrashBin />
+                <TrashBin sx={styles.editableIcons} />
               </IconButton>
 
               <IconButton
-                onClick={() => {
-                  //TODO navigate to edit post
+                onClick={(event) => {
+                  event.stopPropagation();
+                  navigate(`${PATHS.POST}/${post._id}`);
                 }}
               >
-                <Pencil />
+                <Pencil sx={styles.editableIcons} />
               </IconButton>
-            </>
+            </Box>
           )}
         </CardContent>
       </Box>

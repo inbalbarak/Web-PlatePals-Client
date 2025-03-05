@@ -20,7 +20,7 @@ const MyRecipes = () => {
     setSelectedTabs(newValue);
   };
 
-  const { data: userPosts } = useQuery(
+  const { data: userPosts, refetch: refetchPosts } = useQuery(
     QUERY_KEYS.USER_POSTS,
     () =>
       postsService.getByAuthor(
@@ -29,7 +29,6 @@ const MyRecipes = () => {
       ),
     {
       refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
       refetchOnMount: false,
     }
   );
@@ -49,8 +48,16 @@ const MyRecipes = () => {
         <Box>
           {selectedTab == TABS.UPLOADED ? (
             <>
-              {!!userPosts?.length && (
-                <PostsList posts={userPosts} editable={true} />
+              {userPosts?.length ? (
+                <PostsList
+                  posts={userPosts}
+                  editable={true}
+                  refetch={refetchPosts}
+                />
+              ) : (
+                <Box>
+                  <Typography>no posts available</Typography>
+                </Box>
               )}
             </>
           ) : (

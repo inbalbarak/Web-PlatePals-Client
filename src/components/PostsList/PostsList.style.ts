@@ -54,6 +54,15 @@ const styles = {
   postAuthorText: {
     color: "text.secondary",
   },
+
+  editableIconsBox: {
+    display: "flex",
+  },
+
+  editableIcons: {
+    scale: 0.8,
+    zIndex: 1,
+  },
 };
 
 export default styles;

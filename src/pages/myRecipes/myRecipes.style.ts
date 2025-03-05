@@ -15,6 +15,7 @@ const styles = {
   tabsBox: {
     display: "flex",
     justifyContent: "center",
+    flexDirection: "column",
   },
 
   tabs: {

@@ -46,7 +46,7 @@ const BottomNavbar = ({ selectedPath }: { selectedPath?: string }) => {
 
   const handleItemChange = (_event: React.SyntheticEvent, newVal: string) => {
     setActiveItem(newVal);
-    navigate(`/${newVal}`);
+    navigate(newVal);
   };
 
   return (
