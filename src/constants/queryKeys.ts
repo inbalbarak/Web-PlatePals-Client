@@ -3,4 +3,5 @@ export const QUERY_KEYS = {
   USER: "user",
   POSTS_BY_USER: "postsByUser",
   UPDATE_USER: "updateUser",
+  POSTS: "posts",
 };

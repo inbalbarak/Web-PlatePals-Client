@@ -12,6 +12,8 @@ import { useForm, Controller } from "react-hook-form";
 import { Box, Button, Snackbar, Typography } from "@mui/material";
 import { googleLogin, login, refresh, register } from "services/auth.service";
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
+import { useNavigate } from "react-router-dom";
+import { PATHS } from "constants/routes";
 import { isTokenValid } from "services/axiosInstance";
 
 interface UserFormAttributes {
@@ -63,6 +65,8 @@ const Login = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     const autoLogin = async () => {
       if (!isTokenValid()) {
@@ -72,7 +76,7 @@ const Login = () => {
         localStorage.setItem(TOKEN_TIMESTAMP, new Date().toString());
       }
 
-      //TODO navigate to home
+      navigate(PATHS.HOME);
     };
 
     autoLogin()
@@ -130,7 +134,7 @@ const Login = () => {
 
                 window.dispatchEvent(new Event("storage"));
 
-                //TODO move to home
+                navigate(PATHS.HOME);
               } catch (_err) {
                 setBanner(true);
                 setIsLogin(true);
@@ -164,7 +168,7 @@ const Login = () => {
                     );
                     window.dispatchEvent(new Event("storage"));
 
-                    //TODO  move to home
+                    navigate(PATHS.HOME);
                   } catch (_err) {
                     setBanner(true);
                     setIsLoading(false);

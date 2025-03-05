@@ -103,7 +103,7 @@ const EditPost = (post?: PostAttributes) => {
         author: localStorage.getItem(USERNAME) ?? "",
       } as PostAttributes);
 
-      //TODO go back to home
+      navigate(PATHS.HOME);
     } catch (_err) {
       setBanner(true);
     }
@@ -114,7 +114,7 @@ const EditPost = (post?: PostAttributes) => {
       <Box sx={styles.header}>
         <IconButton
           sx={styles.backButton}
-          onClick={() => (location.key ? navigate(-1) : navigate(PATHS.MAIN))}
+          onClick={() => (location.key ? navigate(-1) : navigate(PATHS.HOME))}
         >
           <ArrowBackIcon />
         </IconButton>

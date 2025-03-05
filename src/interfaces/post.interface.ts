@@ -3,7 +3,10 @@ export interface PostAttributes {
   title: string;
   author: string;
   tags: string[];
-  rating?: number;
+  ratingCount?: number;
+  averageRating?: number;
+  imageUrl?: string;
   ingredients: string;
   instructions: string;
+  createdAt?: string;
 }

@@ -1,15 +1,16 @@
 import apiClient from "./axiosInstance";
 import { PostAttributes } from "src/interfaces/post.interface";
 
-const prefix = "/posts";
+const baseUrl = "/posts";
 
 export default {
   upsert: async (post: PostAttributes) => {
     return post._id
-      ? await apiClient.put(prefix, post)
-      : await apiClient.post(prefix, post);
+      ? await apiClient.put(baseUrl, post)
+      : await apiClient.post(baseUrl, post);
   },
-  getByAuthor: async (userId: string) => {
-    return (await apiClient.get(`${prefix}/author/${userId}`)).data;
+  getAll: async (): Promise<PostAttributes[]> => {
+    const { data } = await apiClient.get(baseUrl);
+    return data;
   },
 };
