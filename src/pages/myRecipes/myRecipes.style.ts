@@ -4,6 +4,7 @@ const styles = {
   root: {
     width: "100vw",
     height: "100vh",
+    overflowY: "hidden",
   },
 
   header: {
@@ -12,15 +13,21 @@ const styles = {
     margin: "15px 2px 5px 15px",
   },
 
-  tabsBox: {
+  pageContainer: {
     display: "flex",
-    justifyContent: "center",
     flexDirection: "column",
+    width: "100%",
+  },
+
+  tabsContainer: {
+    display: "flex",
+    justifyContent: "center", // Center only the tabs
+    width: "100%",
   },
 
   tabs: {
     display: "flex",
-    justifyContent: "space-around",
+    justifyContent: "center",
     backgroundColor: colors.mainOrange,
   },
 
@@ -34,6 +41,11 @@ const styles = {
       outline: "none",
       boxShadow: "none",
     },
+  },
+
+  content: {
+    overflowY: "scroll",
+    height: "80vh",
   },
 };
 

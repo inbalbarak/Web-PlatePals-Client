@@ -36,18 +36,20 @@ const MyRecipes = () => {
   return (
     <Box sx={styles.root}>
       <Typography sx={styles.header}>My recipes</Typography>
-      <Box sx={styles.tabsBox}>
-        <Tabs
-          value={selectedTab}
-          onChange={handleChange}
-          TabIndicatorProps={{ style: styles.tabs }}
-        >
-          <Tab value={TABS.UPLOADED} sx={styles.tab} label={TABS.UPLOADED} />
-          <Tab value={TABS.SAVED} sx={styles.tab} label={TABS.SAVED} />
-        </Tabs>
-        <Box>
+      <Box sx={styles.pageContainer}>
+        <Box sx={styles.tabsContainer}>
+          <Tabs
+            value={selectedTab}
+            onChange={handleChange}
+            TabIndicatorProps={{ style: styles.tabs }}
+          >
+            <Tab value={TABS.UPLOADED} sx={styles.tab} label={TABS.UPLOADED} />
+            <Tab value={TABS.SAVED} sx={styles.tab} label={TABS.SAVED} />
+          </Tabs>
+        </Box>
+        <Box sx={styles.content}>
           {selectedTab == TABS.UPLOADED ? (
-            <>
+            <Box>
               {userPosts?.length ? (
                 <PostsList
                   posts={userPosts}
@@ -59,7 +61,7 @@ const MyRecipes = () => {
                   <Typography>no posts available</Typography>
                 </Box>
               )}
-            </>
+            </Box>
           ) : (
             <></>
           )}
