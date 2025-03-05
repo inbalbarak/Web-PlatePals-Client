@@ -43,7 +43,8 @@
       "services/*": ["./src/services/*"],
       "components/*": ["./src/components/*"],
       "pages/*": ["./src/pages/*"],
-      "icons/*": ["./src/icons/*"]
+      "icons/*": ["./src/icons/*"],
+      "utils/*": ["./src/utils/*"]
     }
   }
 }

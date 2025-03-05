@@ -7,18 +7,21 @@ import {
   Typography,
 } from "@mui/material";
 import { chunk } from "lodash";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./editPost.style";
 import { useQuery } from "react-query";
 import InputField from "components/InputField";
 import { QUERY_KEYS } from "constants/queryKeys";
 import { useForm, Controller } from "react-hook-form";
-import { PostAttributes } from "src/interfaces/post.interface";
+import {
+  PostAttributes,
+  PostDTOAttributes,
+} from "src/interfaces/post.interface";
 import tagsService, { TagAttributes } from "services/tags.service";
 import postsService from "services/posts.service";
 import { USERNAME } from "constants/localStorage";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { PATHS } from "constants/routes";
 
 export interface PostFormAttributes {
@@ -78,15 +81,34 @@ const FORM_FIELDS: {
   },
 ];
 
-const EditPost = (post?: PostAttributes) => {
+const EditPost = () => {
   const [banner, setBanner] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const { control, formState, setValue, getValues, watch } =
+  const { id: postId } = useParams();
+
+  const { data: posts } = useQuery(QUERY_KEYS.POSTS, postsService.getAll, {
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+  });
+
+  const post = posts?.find((post) => post._id === postId);
+
+  const { control, formState, setValue, getValues, watch, reset } =
     useForm<PostFormAttributes>({
-      defaultValues: post ?? defaultValues,
+      defaultValues: defaultValues,
       mode: "all",
     });
+
+  useEffect(() => {
+    if (post) {
+      reset({
+        ...post,
+        tags: post.tags.map((tag) => tag._id),
+      });
+    }
+  }, [post]);
 
   const watchedTags = watch("tags");
 
@@ -100,8 +122,8 @@ const EditPost = (post?: PostAttributes) => {
     try {
       await postsService.upsert({
         ...getValues(),
-        author: localStorage.getItem(USERNAME) ?? "",
-      } as PostAttributes);
+        author: localStorage.getItem(USERNAME),
+      } as PostDTOAttributes);
 
       navigate(PATHS.HOME);
     } catch (_err) {

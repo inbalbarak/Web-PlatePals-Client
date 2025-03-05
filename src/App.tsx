@@ -35,7 +35,6 @@ function App() {
                   <Route key={path} path={path} element={<Component />} />
                 ))}
             </Routes>
-            <BottomNavbar />
           </Box>
         </Router>
       </Box>
