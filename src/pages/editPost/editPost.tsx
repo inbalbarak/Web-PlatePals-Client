@@ -15,7 +15,7 @@ import { QUERY_KEYS } from "constants/queryKeys";
 import { useForm, Controller } from "react-hook-form";
 import { PostAttributes } from "src/interfaces/post.interface";
 import tagsService, { TagAttributes } from "services/tags.service";
-import { upsert } from "services/posts.service";
+import postsService from "services/posts.service";
 import { USERNAME } from "constants/localStorage";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -98,7 +98,7 @@ const EditPost = (post?: PostAttributes) => {
 
   const onSave = async () => {
     try {
-      await upsert({
+      await postsService.upsert({
         ...getValues(),
         author: localStorage.getItem(USERNAME) ?? "",
       } as PostAttributes);

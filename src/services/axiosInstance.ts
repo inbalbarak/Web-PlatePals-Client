@@ -23,7 +23,7 @@ export const isTokenValid = () => {
 const apiClient = axios.create({ baseURL: import.meta.env.BACKEND_URL });
 
 apiClient.interceptors.request.use(async (request) => {
-  if (!request.url?.includes("auth")) {
+  if (!request.url?.includes("auth") || request.url?.includes("logout")) {
     const isValid = isTokenValid();
     let authToken = "";
     if (isValid) {

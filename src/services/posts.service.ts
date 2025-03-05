@@ -1,8 +1,15 @@
 import apiClient from "./axiosInstance";
 import { PostAttributes } from "src/interfaces/post.interface";
 
-export const upsert = async (post: PostAttributes) => {
-  return post._id
-    ? await apiClient.put("/post", post)
-    : await apiClient.post("/post", post);
+const prefix = "/posts";
+
+export default {
+  upsert: async (post: PostAttributes) => {
+    return post._id
+      ? await apiClient.put(prefix, post)
+      : await apiClient.post(prefix, post);
+  },
+  getByAuthor: async (userId: string) => {
+    return (await apiClient.get(`${prefix}/author/${userId}`)).data;
+  },
 };

@@ -1,5 +1,6 @@
 import EditPost from "pages/editPost";
-import Login from "../pages/index.ts/login";
+import Login from "pages/login";
+import PersonalInfo from "pages/personalInfo";
 
 export interface RouteType {
   path: string;
@@ -20,6 +21,11 @@ export const ROUTES: RouteType[] = [
     path: "/edit",
     name: "עריכת פוסט",
     element: EditPost,
+  },
+  {
+    path: "/personalInfo",
+    name: "פרטים אישיים",
+    element: PersonalInfo,
   },
 ];
 
