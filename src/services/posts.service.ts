@@ -13,4 +13,11 @@ export default {
     const { data } = await apiClient.get(baseUrl);
     return data;
   },
+  getByAuthor: async (userId: string) => {
+    const { data } = await apiClient.get(`${baseUrl}/author/${userId}`);
+    return data;
+  },
+  delete: async (postId: string) => {
+    await apiClient.delete(`${baseUrl}/${postId}`);
+  },
 };
