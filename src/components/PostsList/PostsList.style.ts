@@ -21,8 +21,8 @@ const styles = {
   },
 
   postImage: {
-    width: "100px",
-    height: "100px",
+    width: "20vw",
+    height: "10vh",
   },
 
   postContent: {

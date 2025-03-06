@@ -11,6 +11,7 @@ export interface PostAttributes {
   ratingCount?: number;
   imageUrl?: string;
   averageRating?: number;
+  imageUrl?: string;
   ingredients: string;
   instructions: string;
   createdAt?: string;
