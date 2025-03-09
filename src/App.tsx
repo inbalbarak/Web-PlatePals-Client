@@ -35,7 +35,6 @@ function App() {
                   <Route key={path} path={path} element={<Component />} />
                 ))}
             </Routes>
-            {window.location.pathname !== "/" && <BottomNavbar />}
           </Box>
         </Router>
       </Box>
