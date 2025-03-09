@@ -1,4 +1,5 @@
 import EditPost from "pages/editPost";
+import MyRecipes from "pages/myRecipes";
 import HomePage from "pages/homePage";
 import RecipePage from "pages/recipePage";
 import Login from "../pages/index.ts/login";
@@ -32,6 +33,11 @@ export const ROUTES: RouteType[] = [
     path: "/edit/:id?",
     name: "עריכת פוסט",
     element: EditPost,
+  },
+  {
+    path: "/my-recipes",
+    name: "my recipes",
+    element: MyRecipes,
   },
 ];
 

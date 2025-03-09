@@ -9,8 +9,8 @@ import PersonalInfo from "icons/PersonalInfo";
 import { useNavigate } from "react-router-dom";
 import { BottomNavigation, BottomNavigationAction } from "@mui/material";
 
-const BottomNavbar = () => {
-  const [activeItem, setActiveItem] = useState(PATHS.HOME);
+const BottomNavbar = ({ selectedPath }: { selectedPath?: string }) => {
+  const [activeItem, setActiveItem] = useState(selectedPath ?? PATHS.HOME);
   const navigate = useNavigate();
 
   const routes = useMemo(
@@ -46,7 +46,7 @@ const BottomNavbar = () => {
 
   const handleItemChange = (_event: React.SyntheticEvent, newVal: string) => {
     setActiveItem(newVal);
-    navigate(newVal);
+    navigate(`/${newVal}`);
   };
 
   return (
