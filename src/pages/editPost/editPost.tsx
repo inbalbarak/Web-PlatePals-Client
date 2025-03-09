@@ -188,22 +188,22 @@ const EditPost = (post?: PostAttributes) => {
             )
           )}
         </Box>
-        <Button
-          sx={styles.actionButton}
-          disabled={!formState.isValid}
-          onClick={() => {
-            void (async () => {
-              try {
-                onSave();
-              } catch (_err) {
-                setBanner(true);
-              }
-            })();
-          }}
-        >
-          Save
-        </Button>
       </Box>
+      <Button
+        sx={styles.actionButton}
+        disabled={!formState.isValid}
+        onClick={() => {
+          void (async () => {
+            try {
+              onSave();
+            } catch (_err) {
+              setBanner(true);
+            }
+          })();
+        }}
+      >
+        Save
+      </Button>
       <Snackbar
         open={banner}
         autoHideDuration={5000}
