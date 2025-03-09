@@ -30,7 +30,7 @@ function App() {
                   <Route key={path} path={path} element={<Component />} />
                 )
               )}
-              {true &&
+              {loggedIn &&
                 ROUTES.map(({ path, element: Component }: RouteType) => (
                   <Route key={path} path={path} element={<Component />} />
                 ))}
