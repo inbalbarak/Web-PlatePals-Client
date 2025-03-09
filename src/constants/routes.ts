@@ -1,6 +1,7 @@
 import EditPost from "pages/editPost";
 import MyRecipes from "pages/myRecipes";
 import HomePage from "pages/homePage";
+import RecipePage from "pages/recipePage";
 import Login from "../pages/index.ts/login";
 
 export interface RouteType {
@@ -24,8 +25,13 @@ export const ROUTES: RouteType[] = [
     element: HomePage,
   },
   {
-    path: "/edit",
-    name: "edit post",
+    path: "/recipe/:id",
+    name: "פרטיי מתכון",
+    element: RecipePage,
+  },
+  {
+    path: "/edit/:id?",
+    name: "עריכת פוסט",
     element: EditPost,
   },
   {
@@ -36,9 +42,10 @@ export const ROUTES: RouteType[] = [
 ];
 
 export const PATHS = {
-  CHAT: "chat",
-  MY_RECIPES: "my-recipes",
-  POST: "post",
-  HOME: "home",
-  PERSONAL_INFO: "personal-info",
+  CHAT: "/chat",
+  MY_RECIPES: "/my-recipes",
+  POST: "/post",
+  RECIPE: "/recipe",
+  HOME: "/home",
+  PERSONAL_INFO: "/personal-info",
 };
