@@ -1,10 +1,13 @@
 import apiClient from "./axiosInstance";
-import { PostAttributes } from "src/interfaces/post.interface";
+import {
+  PostAttributes,
+  PostDTOAttributes,
+} from "src/interfaces/post.interface";
 
 const baseUrl = "/posts";
 
 export default {
-  upsert: async (post: PostAttributes) => {
+  upsert: async (post: PostDTOAttributes) => {
     return post._id
       ? await apiClient.put(baseUrl, post)
       : await apiClient.post(baseUrl, post);

@@ -1,6 +1,6 @@
 const styles = {
   root: {
-    height: "100dvh",
+    height: "100vh",
   },
 
   navbarContainer: {
