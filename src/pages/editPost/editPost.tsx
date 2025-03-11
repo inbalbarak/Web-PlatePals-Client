@@ -13,10 +13,7 @@ import { useQuery } from "react-query";
 import InputField from "components/InputField";
 import { QUERY_KEYS } from "constants/queryKeys";
 import { useForm, Controller } from "react-hook-form";
-import {
-  PostAttributes,
-  PostDTOAttributes,
-} from "src/interfaces/post.interface";
+import { PostDTOAttributes } from "src/interfaces/post.interface";
 import tagsService, { TagAttributes } from "services/tags.service";
 import postsService from "services/posts.service";
 import { USER_ID } from "constants/localStorage";

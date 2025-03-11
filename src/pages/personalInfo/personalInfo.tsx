@@ -19,6 +19,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { PATHS } from "constants/routes";
 import { useQueryClient } from "react-query";
 import { logout } from "services/auth.service";
+import BottomNavbar from "components/BottomNavbar";
 
 interface TextIconProps {
   Icon: React.FC<SvgIconProps>;
@@ -153,6 +154,7 @@ const PersonalInfo = () => {
         onClose={() => setBanner({ open: false, text: "" })}
         message={banner.text}
       />
+      <BottomNavbar selectedPath={PATHS.PERSONAL_INFO} />
     </Box>
   );
 };

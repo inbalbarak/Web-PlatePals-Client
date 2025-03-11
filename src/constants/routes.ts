@@ -50,7 +50,7 @@ export const ROUTES: RouteType[] = [
 export const PATHS = {
   CHAT: "/chat",
   MY_RECIPES: "/my-recipes",
-  POST: "/post",
+  POST: "/edit",
   RECIPE: "/recipe",
   HOME: "/home",
   PERSONAL_INFO: "/personal-info",
