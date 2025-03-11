@@ -4,6 +4,7 @@ import apiClient from "./axiosInstance";
 type tTokens = {
   accessToken: string;
   refreshToken: string;
+  userId: string;
 };
 
 const prefix = "auth";
@@ -37,6 +38,12 @@ export const refresh = async (refreshToken: string) => {
   const res = await apiClient.post<tTokens>(`${prefix}/refresh`, {
     refreshToken,
   });
+
+  return res.data;
+};
+
+export const logout = async () => {
+  const res = await apiClient.post(`${prefix}/logout`);
 
   return res.data;
 };
