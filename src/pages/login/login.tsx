@@ -2,6 +2,7 @@ import {
   ACCESS_TOKEN,
   REFRESH_TOKEN,
   TOKEN_TIMESTAMP,
+  USER_ID,
   USERNAME,
 } from "constants/localStorage";
 import { useEffect, useState } from "react";
@@ -128,6 +129,7 @@ const Login = () => {
 
                 localStorage.setItem(ACCESS_TOKEN, token.accessToken);
                 localStorage.setItem(REFRESH_TOKEN, token.refreshToken);
+                localStorage.setItem(USER_ID, token.userId);
                 localStorage.setItem(USERNAME, getValues("username"));
                 localStorage.setItem(TOKEN_TIMESTAMP, new Date().toString());
 
@@ -158,6 +160,7 @@ const Login = () => {
 
                     localStorage.setItem(ACCESS_TOKEN, token.accessToken);
                     localStorage.setItem(REFRESH_TOKEN, token.refreshToken);
+                    localStorage.setItem(USER_ID, token.userId);
                     localStorage.setItem(USERNAME, getValues("username"));
                     localStorage.setItem(
                       TOKEN_TIMESTAMP,

@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import PostsList from "components/PostsList/PostsList";
 import { USERNAME } from "constants/localStorage";
+import { PATHS } from "constants/routes";
 import BottomNavbar from "components/BottomNavbar";
 
 enum Sort {
@@ -23,7 +24,7 @@ enum Sort {
 }
 
 const HomePage = () => {
-  const [activeTags, setActiveTags] = useState<Set<String>>(new Set());
+  const [activeTags, setActiveTags] = useState<Set<string>>(new Set());
   const [sort, setSort] = useState(Sort.TOP);
 
   const { data: tags } = useQuery(QUERY_KEYS.TAGS, tagsService.getAll, {
@@ -146,7 +147,7 @@ const HomePage = () => {
         </ToggleButtonGroup>
       </Box>
       {!!computedPosts?.length && <PostsList posts={computedPosts} />}
-      <BottomNavbar />
+      <BottomNavbar selectedPath={PATHS.HOME} />
     </Box>
   );
 };
