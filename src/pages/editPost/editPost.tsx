@@ -16,7 +16,7 @@ import { useForm, Controller } from "react-hook-form";
 import { PostDTOAttributes } from "src/interfaces/post.interface";
 import tagsService, { TagAttributes } from "services/tags.service";
 import postsService from "services/posts.service";
-import { USERNAME } from "constants/localStorage";
+import { USER_ID } from "constants/localStorage";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { PATHS } from "constants/routes";
@@ -119,7 +119,7 @@ const EditPost = () => {
     try {
       await postsService.upsert({
         ...getValues(),
-        author: localStorage.getItem(USERNAME),
+        author: localStorage.getItem(USER_ID),
       } as PostDTOAttributes);
 
       navigate(PATHS.HOME);

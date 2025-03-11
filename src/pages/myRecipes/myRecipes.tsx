@@ -22,14 +22,10 @@ const MyRecipes = () => {
 
   const { data: userPosts, refetch: refetchPosts } = useQuery(
     QUERY_KEYS.USER_POSTS,
-    () =>
-      postsService.getByAuthor(
-        // localStorage.getItem(USER_ID) TODO inbal fix when uploading personal-info-page pr
-        "67c80aef7dd293d361bc9af3"
-      ),
+    () => postsService.getByAuthor(),
     {
       refetchOnReconnect: false,
-      refetchOnMount: false,
+      refetchOnWindowFocus: false,
     }
   );
 
