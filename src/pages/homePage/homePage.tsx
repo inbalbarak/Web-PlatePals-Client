@@ -14,9 +14,10 @@ import {
   Typography,
 } from "@mui/material";
 import PostsList from "components/PostsList/PostsList";
+import { USER_ID } from "constants/localStorage";
+import { PATHS } from "constants/routes";
 import BottomNavbar from "components/BottomNavbar";
 import usersService from "services/usersService";
-import { ID } from "constants/localStorage";
 
 enum Sort {
   TOP = "TOP",
@@ -24,7 +25,7 @@ enum Sort {
 }
 
 const HomePage = () => {
-  const [activeTags, setActiveTags] = useState<Set<String>>(new Set());
+  const [activeTags, setActiveTags] = useState<Set<string>>(new Set());
   const [sort, setSort] = useState(Sort.TOP);
 
   const { data: tags } = useQuery(QUERY_KEYS.TAGS, tagsService.getAll, {
@@ -43,11 +44,11 @@ const HomePage = () => {
     }
   );
 
-  const userId = localStorage.getItem(ID);
+  const userId = localStorage.getItem(USER_ID);
 
   const { data: user } = useQuery(
     QUERY_KEYS.USER,
-    () => usersService.getUserById(userId ?? ""),
+    () => usersService.getById(userId ?? ""),
     {
       enabled: !!userId,
       refetchOnReconnect: false,
@@ -160,7 +161,7 @@ const HomePage = () => {
         </ToggleButtonGroup>
       </Box>
       {!!computedPosts?.length && <PostsList posts={computedPosts} />}
-      <BottomNavbar />
+      <BottomNavbar selectedPath={PATHS.HOME} />
     </Box>
   );
 };

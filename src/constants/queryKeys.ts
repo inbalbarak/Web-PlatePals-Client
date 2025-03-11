@@ -1,5 +1,7 @@
 export const QUERY_KEYS = {
   TAGS: "tags",
-  POSTS: "posts",
   USER: "user",
+  POSTS_BY_USER: "postsByUser",
+  UPDATE_USER: "updateUser",
+  POSTS: "posts",
 };

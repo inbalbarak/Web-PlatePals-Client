@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { Create as CreateIcon } from "@mui/icons-material";
 import commentsService from "services/comments.service";
-import { ID } from "constants/localStorage";
+import { USER_ID } from "constants/localStorage";
 
 interface ReviewSectionProps {
   postId: string;
@@ -21,7 +21,7 @@ const ReviewSection: FC<ReviewSectionProps> = ({ postId }) => {
   const [rating, setRating] = useState(0);
 
   const submitReview = () => {
-    const id = localStorage.getItem(ID);
+    const id = localStorage.getItem(USER_ID);
     if (id && (review || rating)) {
       commentsService
         .create({

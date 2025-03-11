@@ -4,8 +4,8 @@ import apiClient from "./axiosInstance";
 const baseUrl = "/users";
 
 export default {
-  getUserById: async (id: string): Promise<UserAttributes> => {
-    const { data } = await apiClient.get(`${baseUrl}/${id}`);
-    return data;
-  },
+  getById: async (userId: string) =>
+    (await apiClient.get<UserAttributes>(`${baseUrl}/${userId}`)).data,
+  upsert: async (_id: string, username: string) =>
+    (await apiClient.put(baseUrl, { _id, username })).data,
 };
