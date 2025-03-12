@@ -5,11 +5,12 @@ export interface CommentAttributes {
     username: string;
     imageUrl: string;
   };
+  createdAt: string;
   postId: string;
   rating: number;
 }
 
 export interface CommentDTOAttributes
-  extends Omit<CommentAttributes, "author"> {
+  extends Omit<CommentAttributes, "author" | "createdAt"> {
   author: string;
 }

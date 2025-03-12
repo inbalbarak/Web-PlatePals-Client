@@ -11,26 +11,53 @@ import {
 import { Create as CreateIcon } from "@mui/icons-material";
 import commentsService from "services/comments.service";
 import { USER_ID } from "constants/localStorage";
+import { CommentAttributes } from "src/interfaces/comment.interface";
+import { useQuery } from "react-query";
+import { QUERY_KEYS } from "constants/queryKeys";
+import usersService from "services/usersService";
 
 interface ReviewSectionProps {
   postId: string;
+  addComment: (comment: CommentAttributes) => void;
 }
 
-const ReviewSection: FC<ReviewSectionProps> = ({ postId }) => {
+const ReviewSection: FC<ReviewSectionProps> = ({ postId, addComment }) => {
   const [review, setReview] = useState("");
   const [rating, setRating] = useState(0);
 
+  const { data: user } = useQuery(
+    QUERY_KEYS.USER,
+    async () => {
+      const user = await usersService.getById(
+        localStorage.getItem(USER_ID) ?? ""
+      );
+
+      return user;
+    },
+    {
+      refetchOnReconnect: false,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+    }
+  );
+
   const submitReview = () => {
-    const id = localStorage.getItem(USER_ID);
-    if (id && (review || rating)) {
+    if (user?._id && (review || rating)) {
       commentsService
         .create({
           postId,
           content: review,
           rating: rating,
-          author: id,
+          author: user._id,
         })
-        .then(() => {
+        .then((comment) => {
+          addComment({
+            ...comment,
+            author: {
+              username: user.username,
+              imageUrl: user.imageUrl,
+            },
+          });
           setReview("");
           setRating(0);
         });

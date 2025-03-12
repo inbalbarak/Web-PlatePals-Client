@@ -1,15 +1,18 @@
-import { CommentDTOAttributes } from "src/interfaces/comment.interface";
+import {
+  CommentAttributes,
+  CommentDTOAttributes,
+} from "src/interfaces/comment.interface";
 import apiClient from "./axiosInstance";
-import { PostAttributes } from "src/interfaces/post.interface";
 
 const baseUrl = "/comments";
 
 export default {
-  create: async (comment: CommentDTOAttributes) => {
-    return await apiClient.post(baseUrl, comment);
+  create: async (comment: CommentDTOAttributes): Promise<CommentAttributes> => {
+    const { data } = await apiClient.post(baseUrl, comment);
+    return data;
   },
 
-  getByPostId: async (id: string): Promise<PostAttributes[]> => {
+  getByPostId: async (id: string): Promise<CommentAttributes[]> => {
     const { data } = await apiClient.get(`${baseUrl}/post/${id}`);
     return data;
   },
@@ -17,7 +20,7 @@ export default {
   getByPostIdUserId: async (
     postId: string,
     userId: string
-  ): Promise<PostAttributes[]> => {
+  ): Promise<CommentAttributes[]> => {
     const { data } = await apiClient.get(
       `${baseUrl}/post/${postId}/user/${userId}`
     );

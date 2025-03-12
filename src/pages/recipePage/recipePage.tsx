@@ -15,6 +15,9 @@ import { convertISODateToString } from "utils/dates";
 import RecipeSection from "components/RecipeSection";
 import BottomNavbar from "components/BottomNavbar";
 import ReviewSection from "components/ReviewSection";
+import commentsService from "services/comments.service";
+import { CommentAttributes } from "src/interfaces/comment.interface";
+import Comment from "components/Comment";
 
 const RecipePage = () => {
   const { data: posts } = useQuery(QUERY_KEYS.POSTS, postsService.getAll, {
@@ -25,11 +28,21 @@ const RecipePage = () => {
 
   const { id: postId } = useParams();
 
+  const [comments, setComments] = useState<CommentAttributes[]>([]);
   const [isSaved, setIsSaved] = useState(false);
 
   useEffect(() => {
+    if (postId) {
+      const fetchComments = async () => {
+        const comments = await commentsService.getByPostId(postId);
+        setComments(comments);
+      };
+
+      fetchComments();
+    }
+
     // TODO: update isSaved by fetching from user
-  }, []);
+  }, [postId]);
 
   const post = useMemo(() => {
     return posts?.find((post) => post._id === postId);
@@ -44,9 +57,12 @@ const RecipePage = () => {
     ingredients,
     instructions,
     averageRating,
-    ratingCount,
     createdAt,
   } = post ?? {};
+
+  const addComment = (comment: CommentAttributes) => {
+    setComments((prevComments) => [...prevComments, comment]);
+  };
 
   return post ? (
     <Box sx={styles.root}>
@@ -96,7 +112,19 @@ const RecipePage = () => {
           <RecipeSection title="Ingredients" content={ingredients} />
           <RecipeSection title="How-To" content={instructions} />
         </Box>
-        {_id && <ReviewSection postId={_id} />}
+        {_id && (
+          <ReviewSection
+            postId={_id}
+            addComment={(comment: CommentAttributes) => addComment(comment)}
+          />
+        )}
+        <Box>
+          {comments.map((comment) => (
+            <Box key={comment._id}>
+              <Comment comment={comment} />
+            </Box>
+          ))}
+        </Box>
       </Box>
       <BottomNavbar />
     </Box>
