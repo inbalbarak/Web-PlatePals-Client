@@ -14,6 +14,8 @@ import { useParams } from "react-router-dom";
 import { convertISODateToString } from "utils/dates";
 import RecipeSection from "components/RecipeSection";
 import BottomNavbar from "components/BottomNavbar";
+import usersService from "services/usersService";
+import { USER_ID } from "constants/localStorage";
 
 const RecipePage = () => {
   const { data: posts } = useQuery(QUERY_KEYS.POSTS, postsService.getAll, {
@@ -22,13 +24,31 @@ const RecipePage = () => {
     refetchOnMount: false,
   });
 
+  const { data: user, refetch } = useQuery(
+    QUERY_KEYS.USER,
+    async () => {
+      const user = await usersService.getById(
+        localStorage.getItem(USER_ID) ?? ""
+      );
+
+      return user;
+    },
+    {
+      refetchOnReconnect: false,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+    }
+  );
+
   const { id: postId } = useParams();
 
   const [isSaved, setIsSaved] = useState(false);
 
   useEffect(() => {
-    // TODO: update isSaved by fetching from user
-  }, []);
+    if (postId) {
+      setIsSaved(!!user?.savedPosts?.includes(postId));
+    }
+  }, [postId, user]);
 
   const post = useMemo(() => {
     return posts?.find((post) => post._id === postId);
@@ -42,7 +62,6 @@ const RecipePage = () => {
     ingredients,
     instructions,
     averageRating,
-    ratingCount,
     createdAt,
   } = post ?? {};
 
@@ -65,8 +84,13 @@ const RecipePage = () => {
           <Box
             sx={styles.headerDetails}
             onClick={() => {
-              //TODO update user saved
-              setIsSaved(!isSaved);
+              if (user?._id && postId) {
+                usersService
+                  .updateSavedPosts(user._id, postId, !isSaved)
+                  .then(() => {
+                    refetch();
+                  });
+              }
             }}
           >
             {isSaved ? <BookmarkIcon /> : <BookmarkBorderIcon />}

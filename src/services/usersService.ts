@@ -8,4 +8,11 @@ export default {
     (await apiClient.get<UserAttributes>(`${userPrefix}/${userId}`)).data,
   upsert: async (_id: string, username: string) =>
     (await apiClient.put(userPrefix, { _id, username })).data,
+  updateSavedPosts: async (userId: string, postId: string, toSave: boolean) =>
+    (
+      await apiClient.put(`${userPrefix}/${userId}/saved-posts`, {
+        postId,
+        toSave,
+      })
+    ).data,
 };
