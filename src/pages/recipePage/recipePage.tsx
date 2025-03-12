@@ -29,6 +29,7 @@ const RecipePage = () => {
   const { id: postId } = useParams();
 
   const [comments, setComments] = useState<CommentAttributes[]>([]);
+  const [rating, setRating] = useState<number>();
   const [isSaved, setIsSaved] = useState(false);
 
   useEffect(() => {
@@ -45,7 +46,13 @@ const RecipePage = () => {
   }, [postId]);
 
   const post = useMemo(() => {
-    return posts?.find((post) => post._id === postId);
+    const currPost = posts?.find((post) => post._id === postId);
+
+    if (!rating) {
+      setRating(currPost?.averageRating);
+    }
+
+    return currPost;
   }, [posts, postId]);
 
   const {
@@ -56,12 +63,15 @@ const RecipePage = () => {
     author,
     ingredients,
     instructions,
-    averageRating,
     createdAt,
   } = post ?? {};
 
-  const addComment = (comment: CommentAttributes) => {
+  const addComment = (
+    comment: CommentAttributes,
+    updatedAverageRating: number
+  ) => {
     setComments((prevComments) => [...prevComments, comment]);
+    setRating(updatedAverageRating);
   };
 
   return post ? (
@@ -77,7 +87,7 @@ const RecipePage = () => {
             <Box sx={styles.title}>{title}</Box>
             <Box sx={styles.rating}>
               <StarIcon sx={styles.ratingIcon} />
-              {averageRating}
+              {rating}
             </Box>
           </Box>
           <Box
@@ -112,12 +122,7 @@ const RecipePage = () => {
           <RecipeSection title="Ingredients" content={ingredients} />
           <RecipeSection title="How-To" content={instructions} />
         </Box>
-        {_id && (
-          <ReviewSection
-            postId={_id}
-            addComment={(comment: CommentAttributes) => addComment(comment)}
-          />
-        )}
+        {_id && <ReviewSection postId={_id} addComment={addComment} />}
         <Box>
           {comments.map((comment) => (
             <Box key={comment._id}>

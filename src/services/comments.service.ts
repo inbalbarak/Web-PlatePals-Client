@@ -7,7 +7,12 @@ import apiClient from "./axiosInstance";
 const baseUrl = "/comments";
 
 export default {
-  create: async (comment: CommentDTOAttributes): Promise<CommentAttributes> => {
+  create: async (
+    comment: CommentDTOAttributes
+  ): Promise<{
+    comment: CommentAttributes;
+    updatedAverageRating: number;
+  }> => {
     const { data } = await apiClient.post(baseUrl, comment);
     return data;
   },

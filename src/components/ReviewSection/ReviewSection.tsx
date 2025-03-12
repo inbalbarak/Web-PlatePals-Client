@@ -18,7 +18,10 @@ import usersService from "services/usersService";
 
 interface ReviewSectionProps {
   postId: string;
-  addComment: (comment: CommentAttributes) => void;
+  addComment: (
+    comment: CommentAttributes,
+    updatedAverageRating: number
+  ) => void;
 }
 
 const ReviewSection: FC<ReviewSectionProps> = ({ postId, addComment }) => {
@@ -50,14 +53,17 @@ const ReviewSection: FC<ReviewSectionProps> = ({ postId, addComment }) => {
           rating: rating,
           author: user._id,
         })
-        .then((comment) => {
-          addComment({
-            ...comment,
-            author: {
-              username: user.username,
-              imageUrl: user.imageUrl,
+        .then(({ comment, updatedAverageRating }) => {
+          addComment(
+            {
+              ...comment,
+              author: {
+                username: user.username,
+                imageUrl: user.imageUrl,
+              },
             },
-          });
+            updatedAverageRating
+          );
           setReview("");
           setRating(0);
         });
