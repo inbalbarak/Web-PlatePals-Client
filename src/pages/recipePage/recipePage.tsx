@@ -1,10 +1,10 @@
 import { chunk } from "lodash";
 import { useEffect, useMemo, useState } from "react";
 import styles from "./recipePage.style";
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { QUERY_KEYS } from "constants/queryKeys";
 import postsService from "services/posts.service";
-import { Box, CardMedia } from "@mui/material";
+import { Box, CardMedia, Divider } from "@mui/material";
 import {
   Star as StarIcon,
   Bookmark as BookmarkIcon,
@@ -18,6 +18,7 @@ import ReviewSection from "components/ReviewSection";
 import commentsService from "services/comments.service";
 import { CommentAttributes } from "src/interfaces/comment.interface";
 import Comment from "components/Comment";
+import { PostAttributes } from "src/interfaces/post.interface";
 
 const RecipePage = () => {
   const { data: posts } = useQuery(QUERY_KEYS.POSTS, postsService.getAll, {
@@ -26,10 +27,11 @@ const RecipePage = () => {
     refetchOnMount: false,
   });
 
+  const queryClient = useQueryClient();
+
   const { id: postId } = useParams();
 
   const [comments, setComments] = useState<CommentAttributes[]>([]);
-  const [rating, setRating] = useState<number>();
   const [isSaved, setIsSaved] = useState(false);
 
   useEffect(() => {
@@ -47,10 +49,6 @@ const RecipePage = () => {
 
   const post = useMemo(() => {
     const currPost = posts?.find((post) => post._id === postId);
-
-    if (!rating) {
-      setRating(currPost?.averageRating);
-    }
 
     return currPost;
   }, [posts, postId]);
@@ -71,7 +69,25 @@ const RecipePage = () => {
     updatedAverageRating: number
   ) => {
     setComments((prevComments) => [...prevComments, comment]);
-    setRating(updatedAverageRating);
+
+    queryClient.setQueryData(
+      [QUERY_KEYS.POSTS],
+      (oldPosts?: PostAttributes[]) => {
+        if (!oldPosts) {
+          return [];
+        }
+
+        return oldPosts.map((post) =>
+          post._id === postId
+            ? {
+                ...post,
+                ratingCount: (post?.ratingCount ?? 0) + 1,
+                averageRating: updatedAverageRating,
+              }
+            : post
+        );
+      }
+    );
   };
 
   return post ? (
@@ -87,7 +103,7 @@ const RecipePage = () => {
             <Box sx={styles.title}>{title}</Box>
             <Box sx={styles.rating}>
               <StarIcon sx={styles.ratingIcon} />
-              {rating}
+              {post.averageRating}
             </Box>
           </Box>
           <Box
@@ -124,9 +140,10 @@ const RecipePage = () => {
         </Box>
         {_id && <ReviewSection postId={_id} addComment={addComment} />}
         <Box>
-          {comments.map((comment) => (
+          {comments.map((comment, index) => (
             <Box key={comment._id}>
               <Comment comment={comment} />
+              {index !== comments.length - 1 && <Divider />}
             </Box>
           ))}
         </Box>

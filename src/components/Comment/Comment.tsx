@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import styles from "./Comment.style";
 import {
   Avatar,
@@ -27,7 +27,7 @@ const Comment: FC<CommentProps> = ({ comment }) => {
         subheader={convertISODateToString(createdAt)}
       />
       <CardContent>
-        <Typography variant="body2" sx={{ color: "text.secondary" }}>
+        <Typography variant="body2" sx={styles.content}>
           {content}
         </Typography>
       </CardContent>
