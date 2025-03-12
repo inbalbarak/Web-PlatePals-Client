@@ -68,7 +68,11 @@ const HomePage = () => {
       }
 
       return filteredPosts?.sort((a, b) => {
-        if (sort === Sort.TOP && a.averageRating && b.averageRating) {
+        if (
+          sort === Sort.TOP &&
+          a.averageRating !== undefined &&
+          b.averageRating !== undefined
+        ) {
           if (b.averageRating == a.averageRating) {
             return (b.ratingCount ?? 0) - (a.ratingCount ?? 0);
           }
