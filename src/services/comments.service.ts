@@ -21,14 +21,4 @@ export default {
     const { data } = await apiClient.get(`${baseUrl}/post/${id}`);
     return data;
   },
-
-  getByPostIdUserId: async (
-    postId: string,
-    userId: string
-  ): Promise<CommentAttributes[]> => {
-    const { data } = await apiClient.get(
-      `${baseUrl}/post/${postId}/user/${userId}`
-    );
-    return data;
-  },
 };
