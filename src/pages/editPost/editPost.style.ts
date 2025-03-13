@@ -9,6 +9,30 @@ const styles = {
     overflow: "hidden",
   },
 
+  recipeImage: {
+    width: "100%",
+    height: "30%",
+  },
+
+  dropzone: {
+    display: "flex",
+    position: "relative",
+    height: "100%",
+  },
+
+  uploadPhotoButton: {
+    display: "flex",
+    position: "absolute",
+    width: "fit-content",
+    background: colors.white,
+    margin: "10px",
+    outline: "none !important",
+
+    ":hover": {
+      backgroundColor: colors.white,
+    },
+  },
+
   header: {
     display: "flex",
     alignItems: "center",
