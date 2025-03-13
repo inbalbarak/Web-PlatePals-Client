@@ -32,13 +32,12 @@ interface formData {
 
 const PersonalInfo = () => {
   const [editMode, setEditMode] = useState(false);
-  // const [updatedUsername, setUpdatedUsername] = useState("");
   const [banner, setBanner] = useState({
     open: false,
     text: "",
   });
   const [file, setFile] = useState<File | null>(null);
-  const { register, handleSubmit, watch, setValue } = useForm<formData>();
+  const { register, handleSubmit, watch } = useForm<formData>();
   const inputFileRef: { current: HTMLInputElement | null } = { current: null };
   const [img] = watch(["img"]);
 
@@ -56,8 +55,6 @@ const PersonalInfo = () => {
     const { username, img } = data;
 
     const imageUrl = await filesService.uploadImg(img[0]);
-
-    console.log("imageUrl:", imageUrl);
 
     updateUser({
       _id: user?._id ?? "",
@@ -78,8 +75,6 @@ const PersonalInfo = () => {
       const user = await usersService.getById(
         localStorage.getItem(USER_ID) ?? ""
       );
-
-      setValue("username", user.username);
 
       return user;
     },
@@ -154,7 +149,7 @@ const PersonalInfo = () => {
                 <Box sx={styles.profilePicture}>
                   <Avatar
                     sx={styles.avatar}
-                    src={file ? URL.createObjectURL(file) : ""}
+                    src={file ? URL.createObjectURL(file) : user?.imageUrl}
                   />
                   <input
                     {...rest}
@@ -180,6 +175,7 @@ const PersonalInfo = () => {
                 <Typography>Username</Typography>
                 <TextField
                   {...register("username")}
+                  value={user?.username}
                   variant="outlined"
                 ></TextField>
               </Box>
