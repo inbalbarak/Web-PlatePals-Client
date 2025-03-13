@@ -59,7 +59,7 @@ const ReviewSection: FC<ReviewSectionProps> = ({ postId, addComment }) => {
               ...comment,
               author: {
                 username: user.username,
-                imageUrl: user.imageUrl,
+                ...(user.imageUrl && { imageUrl: user.imageUrl }),
               },
             },
             updatedAverageRating

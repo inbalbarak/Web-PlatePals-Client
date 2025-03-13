@@ -9,7 +9,6 @@ export interface PostAttributes {
   };
   tags: TagAttributes[];
   ratingCount?: number;
-  imageUrl?: string;
   averageRating?: number;
   imageUrl?: string;
   ingredients: string;

@@ -3,7 +3,7 @@ export interface CommentAttributes {
   content: string;
   author: {
     username: string;
-    imageUrl: string;
+    imageUrl?: string;
   };
   createdAt: string;
   postId: string;

@@ -21,7 +21,7 @@ const Comment: FC<CommentProps> = ({ comment }) => {
   return (
     <Card sx={styles.root}>
       <CardHeader
-        avatar={<Avatar src={author.imageUrl} />}
+        avatar={<Avatar src={author.imageUrl ?? "/recipe-default.png"} />}
         action={<Rating name="read-only" value={rating} readOnly />}
         title={`${author.username}`}
         subheader={convertISODateToString(createdAt)}

@@ -3,5 +3,5 @@ export interface UserAttributes {
   username: string;
   password: string;
   email: string;
-  imageUrl: string;
+  imageUrl?: string;
 }
