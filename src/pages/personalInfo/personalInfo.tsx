@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from "react-query";
 import styles from "./personalInfo.style";
 import {
+  Avatar,
   Box,
   Button,
   IconButton,
@@ -14,6 +15,7 @@ import usersService from "services/usersService";
 import { USER_ID } from "constants/localStorage";
 import { ArrowBack } from "@mui/icons-material";
 import PersonIcon from "@mui/icons-material/Person";
+import StarIcon from "@mui/icons-material/Star";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { PATHS } from "constants/routes";
@@ -25,13 +27,6 @@ interface TextIconProps {
   Icon: React.FC<SvgIconProps>;
   text: string;
 }
-
-const TextIconComponent: React.FC<TextIconProps> = ({ Icon, text }) => (
-  <Box sx={styles.textIconComponent}>
-    <Icon sx={{ scale: 1.5 }} />
-    <Typography sx={{ marginLeft: 2, fontSize: 20 }}>{text}</Typography>
-  </Box>
-);
 
 const PersonalInfo = () => {
   const [editMode, setEditMode] = useState(false);
@@ -137,9 +132,10 @@ const PersonalInfo = () => {
         </Box>
       ) : (
         <Box sx={styles.content}>
-          {/* TODO add profile image */}
-          <TextIconComponent Icon={PersonIcon} text={user?.username ?? ""} />
-          {/* <TextIconComponent Icon={StarRateIcon} text={""} /> TODO add rating */}
+          <Box sx={styles.profileDetails}>
+            <Avatar sx={styles.avatar} src={`${user?.imageUrl}`} />
+            <Typography sx={styles.username}>{user?.username ?? ""}</Typography>
+          </Box>
           <Button
             sx={[styles.outlinedButton, styles.bottomCenter]}
             onClick={() => setEditMode(true)}
