@@ -6,6 +6,12 @@ const userPrefix = "/users";
 export default {
   getById: async (userId: string) =>
     (await apiClient.get<UserAttributes>(`${userPrefix}/${userId}`)).data,
-  upsert: async (_id: string, username: string) =>
-    (await apiClient.put(userPrefix, { _id, username })).data,
+  upsert: async (_id: string, username: string, imageUrl?: string) =>
+    (
+      await apiClient.put(userPrefix, {
+        _id,
+        username,
+        ...(imageUrl && { imageUrl }),
+      })
+    ).data,
 };

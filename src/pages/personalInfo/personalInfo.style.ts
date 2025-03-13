@@ -65,6 +65,33 @@ const styles = {
     marginTop: 5,
     padding: 3,
   },
+
+  form: {
+    display: "flex",
+    width: "100%",
+    flexDirection: "column",
+  },
+
+  fields: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "10px",
+  },
+
+  profilePictureField: {
+    display: "flex",
+    width: "max-content",
+    alignItems: "start",
+    flexDirection: "column",
+    gap: "5px",
+  },
+
+  profilePicture: { display: "flex", alignItems: "baseline" },
+
+  uploadPhotoButton: {
+    width: "fit-content",
+    outline: "none !important",
+  },
 };
 
 export default styles;

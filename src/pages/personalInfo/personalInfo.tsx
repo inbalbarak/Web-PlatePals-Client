@@ -4,6 +4,7 @@ import {
   Avatar,
   Box,
   Button,
+  FormControl,
   IconButton,
   Snackbar,
   SvgIconProps,
@@ -11,30 +12,62 @@ import {
   Typography,
 } from "@mui/material";
 import { QUERY_KEYS } from "constants/queryKeys";
-import usersService from "services/usersService";
+import usersService from "services/users.service";
 import { USER_ID } from "constants/localStorage";
 import { ArrowBack } from "@mui/icons-material";
-import PersonIcon from "@mui/icons-material/Person";
-import StarIcon from "@mui/icons-material/Star";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { PATHS } from "constants/routes";
 import { useQueryClient } from "react-query";
 import { logout } from "services/auth.service";
 import BottomNavbar from "components/BottomNavbar";
+import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
+import { useForm } from "react-hook-form";
+import filesService from "services/files.service";
 
-interface TextIconProps {
-  Icon: React.FC<SvgIconProps>;
-  text: string;
+interface formData {
+  username: string;
+  img: File[];
 }
 
 const PersonalInfo = () => {
   const [editMode, setEditMode] = useState(false);
-  const [updatedUsername, setUpdatedUsername] = useState("");
+  // const [updatedUsername, setUpdatedUsername] = useState("");
   const [banner, setBanner] = useState({
     open: false,
     text: "",
   });
+  const [file, setFile] = useState<File | null>(null);
+  const { register, handleSubmit, watch, setValue } = useForm<formData>();
+  const inputFileRef: { current: HTMLInputElement | null } = { current: null };
+  const [img] = watch(["img"]);
+
+  useEffect(() => {
+    if (img) {
+      console.log(img);
+      setFile(img[0]);
+    }
+  }, [img]);
+
+  const { ref, ...rest } = register("img");
+
+  const onSubmit = async (data: formData) => {
+    console.log("formData:", data);
+    const { username, img } = data;
+
+    const imageUrl = await filesService.uploadImg(img[0]);
+
+    console.log("imageUrl:", imageUrl);
+
+    updateUser({
+      _id: user?._id ?? "",
+      username,
+      imageUrl,
+    });
+    refetch();
+    setEditMode(false);
+  };
+
   const navigate = useNavigate();
   const location = useLocation();
   const queryClient = useQueryClient();
@@ -45,7 +78,8 @@ const PersonalInfo = () => {
       const user = await usersService.getById(
         localStorage.getItem(USER_ID) ?? ""
       );
-      setUpdatedUsername(user.username);
+
+      setValue("username", user.username);
 
       return user;
     },
@@ -56,14 +90,10 @@ const PersonalInfo = () => {
     }
   );
 
-  useEffect(() => {
-    setUpdatedUsername(user?.username ?? "");
-  }, [user]);
-
   const { mutate: updateUser } = useMutation(
     QUERY_KEYS.UPDATE_USER,
-    async (data: { _id: string; username: string }) =>
-      await usersService.upsert(data._id, data.username),
+    async (data: { _id: string; username: string; imageUrl?: string }) =>
+      await usersService.upsert(data._id, data.username, data.imageUrl),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(QUERY_KEYS.USER);
@@ -112,23 +142,55 @@ const PersonalInfo = () => {
         <Typography sx={styles.profileText}>Profile</Typography>
       </Box>
       {editMode ? (
-        <Box sx={styles.content}>
-          <Typography>Username</Typography>
-          <TextField
-            variant="outlined"
-            value={updatedUsername}
-            onChange={({ target }) => setUpdatedUsername(target.value)}
-          ></TextField>
-          <Button
-            onClick={() => {
-              updateUser({ _id: user?._id ?? "", username: updatedUsername });
-              refetch();
-              setEditMode(false);
-            }}
-            sx={[styles.filledButton, styles.bottomCenter]}
-          >
-            Update
-          </Button>
+        <Box
+          component="form"
+          sx={styles.form}
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <Box sx={styles.content}>
+            <Box sx={styles.fields}>
+              <Box sx={styles.profilePictureField}>
+                <Typography>Profile Picture</Typography>
+                <Box sx={styles.profilePicture}>
+                  <Avatar
+                    sx={styles.avatar}
+                    src={file ? URL.createObjectURL(file) : ""}
+                  />
+                  <input
+                    {...rest}
+                    ref={(e) => {
+                      ref(e);
+                      inputFileRef.current = e;
+                    }}
+                    type="file"
+                    accept="image/jpeg, image/png"
+                    style={{ display: "none" }}
+                  />
+                  <IconButton
+                    sx={styles.uploadPhotoButton}
+                    onClick={() => {
+                      inputFileRef.current?.click();
+                    }}
+                  >
+                    <AddAPhotoIcon />
+                  </IconButton>
+                </Box>
+              </Box>
+              <Box>
+                <Typography>Username</Typography>
+                <TextField
+                  {...register("username")}
+                  variant="outlined"
+                ></TextField>
+              </Box>
+            </Box>
+            <Button
+              sx={[styles.filledButton, styles.bottomCenter]}
+              type="submit"
+            >
+              Update
+            </Button>
+          </Box>
         </Box>
       ) : (
         <Box sx={styles.content}>
