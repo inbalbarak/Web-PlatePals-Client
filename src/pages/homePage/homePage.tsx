@@ -40,7 +40,6 @@ const HomePage = () => {
     {
       refetchOnReconnect: false,
       refetchOnWindowFocus: false,
-      refetchOnMount: false,
     }
   );
 
