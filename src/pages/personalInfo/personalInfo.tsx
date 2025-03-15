@@ -35,13 +35,17 @@ const PersonalInfo = () => {
     text: "",
   });
   const [file, setFile] = useState<File | null>(null);
-  const { register, handleSubmit, watch } = useForm<formData>();
+  const { register, handleSubmit, setValue, watch } = useForm<formData>({
+    defaultValues: {
+      username: "",
+      img: [],
+    },
+  });
   const inputFileRef: { current: HTMLInputElement | null } = { current: null };
   const [img] = watch(["img"]);
 
   useEffect(() => {
     if (img) {
-      console.log(img);
       setFile(img[0]);
     }
   }, [img]);
@@ -49,7 +53,6 @@ const PersonalInfo = () => {
   const { ref, ...rest } = register("img");
 
   const onSubmit = async (data: formData) => {
-    console.log("formData:", data);
     const { username, img } = data;
 
     const imageUrl = await filesService.uploadImg(img[0]);
@@ -82,6 +85,12 @@ const PersonalInfo = () => {
       refetchOnWindowFocus: false,
     }
   );
+
+  useEffect(() => {
+    if (user) {
+      setValue("username", user.username);
+    }
+  }, [user]);
 
   const { mutate: updateUser } = useMutation(
     QUERY_KEYS.UPDATE_USER,
@@ -173,7 +182,7 @@ const PersonalInfo = () => {
                 <Typography>Username</Typography>
                 <TextField
                   {...register("username")}
-                  value={user?.username}
+                  value={watch("username")}
                   variant="outlined"
                 ></TextField>
               </Box>

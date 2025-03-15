@@ -14,7 +14,7 @@ import { useParams } from "react-router-dom";
 import { convertISODateToString } from "utils/dates";
 import RecipeSection from "components/RecipeSection";
 import BottomNavbar from "components/BottomNavbar";
-import usersService from "services/usersService";
+import usersService from "services/users.service";
 import { USER_ID } from "constants/localStorage";
 import ReviewSection from "components/ReviewSection";
 import commentsService from "services/comments.service";

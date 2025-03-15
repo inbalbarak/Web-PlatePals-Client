@@ -14,7 +14,7 @@ import { USER_ID } from "constants/localStorage";
 import { CommentAttributes } from "src/interfaces/comment.interface";
 import { useQuery } from "react-query";
 import { QUERY_KEYS } from "constants/queryKeys";
-import usersService from "services/usersService";
+import usersService from "services/users.service";
 
 interface ReviewSectionProps {
   postId: string;
