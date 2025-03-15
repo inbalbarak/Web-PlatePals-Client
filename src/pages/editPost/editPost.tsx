@@ -9,7 +9,7 @@ import {
 import { chunk } from "lodash";
 import { useEffect, useState } from "react";
 import styles from "./editPost.style";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import InputField from "components/InputField";
 import { QUERY_KEYS } from "constants/queryKeys";
 import { useForm, Controller } from "react-hook-form";
@@ -79,6 +79,8 @@ const FORM_FIELDS: {
 ];
 
 const EditPost = () => {
+  const queryClient = useQueryClient();
+
   const [banner, setBanner] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -121,6 +123,8 @@ const EditPost = () => {
         ...getValues(),
         author: localStorage.getItem(USER_ID),
       } as PostDTOAttributes);
+
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.POSTS] });
 
       navigate(PATHS.HOME);
     } catch (_err) {

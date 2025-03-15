@@ -14,9 +14,10 @@ import {
   Typography,
 } from "@mui/material";
 import PostsList from "components/PostsList/PostsList";
-import { USERNAME } from "constants/localStorage";
+import { USER_ID } from "constants/localStorage";
 import { PATHS } from "constants/routes";
 import BottomNavbar from "components/BottomNavbar";
+import usersService from "services/usersService";
 
 enum Sort {
   TOP = "TOP",
@@ -42,6 +43,19 @@ const HomePage = () => {
     }
   );
 
+  const userId = localStorage.getItem(USER_ID);
+
+  const { data: user } = useQuery(
+    QUERY_KEYS.USER,
+    () => usersService.getById(userId ?? ""),
+    {
+      enabled: !!userId,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    }
+  );
+
   const computedPosts = useMemo(() => {
     if (fetchedPosts) {
       let filteredPosts = fetchedPosts;
@@ -53,7 +67,11 @@ const HomePage = () => {
       }
 
       return filteredPosts?.sort((a, b) => {
-        if (sort === Sort.TOP && a.averageRating && b.averageRating) {
+        if (
+          sort === Sort.TOP &&
+          a.averageRating !== undefined &&
+          b.averageRating !== undefined
+        ) {
           if (b.averageRating == a.averageRating) {
             return (b.ratingCount ?? 0) - (a.ratingCount ?? 0);
           }
@@ -84,7 +102,7 @@ const HomePage = () => {
     exclusive: true,
   };
 
-  const username = localStorage.getItem(USERNAME) ?? "";
+  const username = user?.username;
 
   const sortButtons = Object.values(Sort).map((key) => {
     return (
