@@ -68,7 +68,7 @@ const RecipePage = () => {
     comment: CommentAttributes,
     updatedAverageRating: number
   ) => {
-    setComments((prevComments) => [...prevComments, comment]);
+    setComments((prevComments) => [comment, ...prevComments]);
 
     queryClient.setQueryData(
       [QUERY_KEYS.POSTS],
