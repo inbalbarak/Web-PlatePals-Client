@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Box, Button, Paper, InputBase } from "@mui/material";
+import { Box, Button, Paper, InputBase, Snackbar } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import styles from "./chatbot.style";
 import BottomNavbar from "components/BottomNavbar";
@@ -11,6 +11,7 @@ export interface ChatMessage {
 }
 
 const ChatBot = () => {
+  const [banner, setBanner] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isUserTurn, setIsUserTurn] = useState<boolean>(true);
 
@@ -45,9 +46,13 @@ const ChatBot = () => {
       };
 
       if (messages[messages.length - 1].role === "user") {
-        getBotMessage(messages).then((message) => {
-          setMessages([...messages, message]);
-        });
+        getBotMessage(messages)
+          .then((message) => {
+            setMessages([...messages, message]);
+          })
+          .catch(() => {
+            setBanner(true);
+          });
       }
     }
   }, [isUserTurn]);
@@ -112,6 +117,12 @@ const ChatBot = () => {
           <SendIcon />
         </Button>
       </Box>
+      <Snackbar
+        open={banner}
+        autoHideDuration={2000}
+        onClose={() => setBanner(false)}
+        message="An error accrued while saving the post, try again later"
+      />
       <BottomNavbar />
     </Box>
   );

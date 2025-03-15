@@ -146,7 +146,7 @@ const HomePage = () => {
         </ToggleButtonGroup>
       </Box>
       {!!computedPosts?.length && <PostsList posts={computedPosts} />}
-      <BottomNavbar selectedPath={PATHS.HOME} />
+      <BottomNavbar />
     </Box>
   );
 };
