@@ -16,6 +16,10 @@ export default {
     const { data } = await apiClient.get(baseUrl);
     return data;
   },
+  getByIds: async (ids: string[]): Promise<PostAttributes[]> => {
+    const { data } = await apiClient.post(`${baseUrl}/ids`, { ids });
+    return data;
+  },
   getByAuthor: async () => {
     const { data } = await apiClient.get(`${baseUrl}/user/`);
     return data;

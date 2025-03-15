@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { PATHS } from "constants/routes";
 import BottomNavbar from "components/BottomNavbar";
 import { Box, Tab, Tabs, Typography } from "@mui/material";
@@ -7,6 +7,9 @@ import { QUERY_KEYS } from "constants/queryKeys";
 import postsService from "services/posts.service";
 import { useQuery } from "react-query";
 import PostsList from "components/PostsList/PostsList";
+import { USER_ID } from "constants/localStorage";
+import usersService from "services/usersService";
+import { PostAttributes } from "src/interfaces/post.interface";
 
 const TABS = {
   UPLOADED: "uploaded",
@@ -15,10 +18,7 @@ const TABS = {
 
 const MyRecipes = () => {
   const [selectedTab, setSelectedTabs] = useState(TABS.UPLOADED);
-
-  const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
-    setSelectedTabs(newValue);
-  };
+  const [savedPosts, setSavedPosts] = useState<PostAttributes[]>([]);
 
   const { data: userPosts, refetch: refetchPosts } = useQuery(
     QUERY_KEYS.USER_POSTS,
@@ -28,6 +28,42 @@ const MyRecipes = () => {
       refetchOnWindowFocus: false,
     }
   );
+
+  const { data: user } = useQuery(
+    QUERY_KEYS.USER,
+    async () => {
+      const user = await usersService.getById(
+        localStorage.getItem(USER_ID) ?? ""
+      );
+
+      return user;
+    },
+    {
+      refetchOnReconnect: false,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  useEffect(() => {
+    const fetchPostsByIds = async () => {
+      if (user?.savedPosts) {
+        try {
+          const posts = await postsService.getByIds(user.savedPosts);
+          setSavedPosts(posts);
+        } catch (error) {
+          console.error(error);
+          setSavedPosts([]);
+        }
+      }
+    };
+
+    fetchPostsByIds();
+  }, [user]);
+
+  const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
+    setSelectedTabs(newValue);
+  };
 
   return (
     <Box sx={styles.root}>
@@ -54,12 +90,20 @@ const MyRecipes = () => {
                 />
               ) : (
                 <Box>
-                  <Typography>no posts available</Typography>
+                  <Typography>You haven't uploaded any posts yet</Typography>
                 </Box>
               )}
             </Box>
           ) : (
-            <></>
+            <Box>
+              {savedPosts?.length ? (
+                <PostsList posts={savedPosts} />
+              ) : (
+                <Box>
+                  <Typography>You haven't saved any posts yet</Typography>
+                </Box>
+              )}
+            </Box>
           )}
         </Box>
       </Box>

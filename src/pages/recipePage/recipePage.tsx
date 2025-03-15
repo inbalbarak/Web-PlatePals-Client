@@ -1,7 +1,7 @@
 import { chunk } from "lodash";
 import { useEffect, useMemo, useState } from "react";
 import styles from "./recipePage.style";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import { QUERY_KEYS } from "constants/queryKeys";
 import postsService from "services/posts.service";
 import { Box, CardMedia, Divider } from "@mui/material";
@@ -14,6 +14,8 @@ import { useParams } from "react-router-dom";
 import { convertISODateToString } from "utils/dates";
 import RecipeSection from "components/RecipeSection";
 import BottomNavbar from "components/BottomNavbar";
+import usersService from "services/usersService";
+import { USER_ID } from "constants/localStorage";
 import ReviewSection from "components/ReviewSection";
 import commentsService from "services/comments.service";
 import { CommentAttributes } from "src/interfaces/comment.interface";
@@ -27,6 +29,21 @@ const RecipePage = () => {
     refetchOnMount: false,
   });
 
+  const { data: user, refetch } = useQuery(
+    QUERY_KEYS.USER,
+    async () => {
+      const user = await usersService.getById(
+        localStorage.getItem(USER_ID) ?? ""
+      );
+
+      return user;
+    },
+    {
+      refetchOnReconnect: false,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+    }
+  );
   const queryClient = useQueryClient();
 
   const { id: postId } = useParams();
@@ -41,11 +58,10 @@ const RecipePage = () => {
         setComments(comments);
       };
 
+      setIsSaved(!!user?.savedPosts?.includes(postId));
       fetchComments();
     }
-
-    // TODO: update isSaved by fetching from user
-  }, [postId]);
+  }, [postId, user]);
 
   const post = useMemo(() => {
     const currPost = posts?.find((post) => post._id === postId);
@@ -61,6 +77,7 @@ const RecipePage = () => {
     author,
     ingredients,
     instructions,
+    averageRating,
     createdAt,
   } = post ?? {};
 
@@ -103,14 +120,19 @@ const RecipePage = () => {
             <Box sx={styles.title}>{title}</Box>
             <Box sx={styles.rating}>
               <StarIcon sx={styles.ratingIcon} />
-              {post.averageRating}
+              {averageRating}
             </Box>
           </Box>
           <Box
             sx={styles.headerDetails}
             onClick={() => {
-              //TODO update user saved
-              setIsSaved(!isSaved);
+              if (user?._id && postId) {
+                usersService
+                  .updateSavedPosts(user._id, postId, !isSaved)
+                  .then(() => {
+                    refetch();
+                  });
+              }
             }}
           >
             {isSaved ? <BookmarkIcon /> : <BookmarkBorderIcon />}
