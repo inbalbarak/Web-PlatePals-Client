@@ -17,7 +17,6 @@ export default {
         const url: string = res.data.url;
         return url;
       } catch (err) {
-        console.log(err);
         return;
       }
     }
