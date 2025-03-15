@@ -52,7 +52,6 @@ const MyRecipes = () => {
           const posts = await postsService.getByIds(user.savedPosts);
           setSavedPosts(posts);
         } catch (error) {
-          console.error(error);
           setSavedPosts([]);
         }
       }
