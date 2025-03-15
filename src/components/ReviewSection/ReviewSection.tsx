@@ -50,8 +50,8 @@ const ReviewSection: FC<ReviewSectionProps> = ({ postId, addComment }) => {
         .create({
           postId,
           content: review,
-          rating: rating,
           author: user._id,
+          ...(rating && { rating }),
         })
         .then(({ comment, updatedAverageRating }) => {
           addComment(

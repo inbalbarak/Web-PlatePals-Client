@@ -7,7 +7,7 @@ export interface CommentAttributes {
   };
   createdAt: string;
   postId: string;
-  rating: number;
+  rating?: number;
 }
 
 export interface CommentDTOAttributes

@@ -22,7 +22,11 @@ const Comment: FC<CommentProps> = ({ comment }) => {
     <Card sx={styles.root}>
       <CardHeader
         avatar={<Avatar src={author.imageUrl ?? "/recipe-default.png"} />}
-        action={<Rating name="read-only" value={rating} readOnly />}
+        action={
+          comment.rating !== undefined ? (
+            <Rating name="read-only" value={rating} readOnly />
+          ) : null
+        }
         title={`${author.username}`}
         subheader={convertISODateToString(createdAt)}
       />
