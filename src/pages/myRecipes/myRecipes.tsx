@@ -108,7 +108,7 @@ const MyRecipes = () => {
         </Box>
       </Box>
 
-      <BottomNavbar selectedPath={PATHS.MY_RECIPES} />
+      <BottomNavbar />
     </Box>
   );
 };

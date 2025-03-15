@@ -3,10 +3,12 @@ import { TagAttributes } from "services/tags.service";
 export interface PostAttributes {
   _id?: string;
   title: string;
-  author: string;
+  author: {
+    _id: string;
+    username: string;
+  };
   tags: TagAttributes[];
   ratingCount?: number;
-  imageUrl?: string;
   averageRating?: number;
   imageUrl?: string;
   ingredients: string;
@@ -14,6 +16,8 @@ export interface PostAttributes {
   createdAt?: string;
 }
 
-export interface PostDTOAttributes extends Omit<PostAttributes, "tags"> {
+export interface PostDTOAttributes
+  extends Omit<PostAttributes, "tags" | "author"> {
   tags: string[];
+  author: string;
 }

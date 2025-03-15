@@ -14,7 +14,12 @@ import postsService from "services/posts.service";
 import Pencil from "icons/Pencil";
 import { useNavigate } from "react-router-dom";
 import { PATHS } from "constants/routes";
-import { RefetchOptions, RefetchQueryFilters } from "react-query";
+import {
+  RefetchOptions,
+  RefetchQueryFilters,
+  useQueryClient,
+} from "react-query";
+import { QUERY_KEYS } from "constants/queryKeys";
 
 interface PostsListProps {
   posts: PostAttributes[];
@@ -26,6 +31,7 @@ interface PostsListProps {
 
 const PostsList: FC<PostsListProps> = ({ posts, editable, refetch }) => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const createPost = (post: PostAttributes) => {
     const { title, ratingCount, averageRating, author, imageUrl } = post;
@@ -64,16 +70,19 @@ const PostsList: FC<PostsListProps> = ({ posts, editable, refetch }) => {
               variant="subtitle1"
               component="div"
             >
-              {author}
+              {author.username}
             </Typography>
           )}
 
           {editable && (
             <Box sx={styles.editableIconsBox}>
               <IconButton
-                onClick={(event) => {
+                onClick={async (event) => {
                   event.stopPropagation();
-                  postsService.delete(post._id ?? "");
+                  await postsService.delete(post._id ?? "");
+                  queryClient.invalidateQueries({
+                    queryKey: [QUERY_KEYS.POSTS],
+                  });
                   refetch?.();
                 }}
               >

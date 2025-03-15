@@ -4,4 +4,5 @@ export interface UserAttributes {
   password: string;
   email: string;
   savedPosts?: string[];
+  imageUrl?: string;
 }
