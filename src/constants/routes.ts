@@ -4,6 +4,7 @@ import PersonalInfo from "pages/personalInfo";
 import MyRecipes from "pages/myRecipes";
 import HomePage from "pages/homePage";
 import RecipePage from "pages/recipePage";
+import ChatBot from "pages/chatbot";
 
 export interface RouteType {
   path: string;
@@ -36,19 +37,29 @@ export const ROUTES: RouteType[] = [
     element: EditPost,
   },
   {
+    path: "/edit/:id?",
+    name: "עריכת פוסט",
+    element: EditPost,
+  },
+  {
+    path: "/chatbot",
+    name: "צ'אטבוט",
+    element: ChatBot,
+  },
+  {
     path: "/personal-info",
     name: "פרטים אישיים",
     element: PersonalInfo,
   },
   {
     path: "/my-recipes",
-    name: "my recipes",
+    name: "המתכונים שלי",
     element: MyRecipes,
   },
 ];
 
 export const PATHS = {
-  CHAT: "/chat",
+  CHATBOT: "/chatbot",
   MY_RECIPES: "/my-recipes",
   POST: "/edit",
   RECIPE: "/recipe",

@@ -14,10 +14,9 @@ import {
   Typography,
 } from "@mui/material";
 import PostsList from "components/PostsList/PostsList";
-import { USER_ID, USERNAME } from "constants/localStorage";
-import { PATHS } from "constants/routes";
 import BottomNavbar from "components/BottomNavbar";
 import usersService from "services/users.service";
+import { USER_ID } from "constants/localStorage";
 
 enum Sort {
   TOP = "TOP",
@@ -70,7 +69,11 @@ const HomePage = () => {
       }
 
       return filteredPosts?.sort((a, b) => {
-        if (sort === Sort.TOP && a.averageRating && b.averageRating) {
+        if (
+          sort === Sort.TOP &&
+          a.averageRating !== undefined &&
+          b.averageRating !== undefined
+        ) {
           if (b.averageRating == a.averageRating) {
             return (b.ratingCount ?? 0) - (a.ratingCount ?? 0);
           }
@@ -159,7 +162,7 @@ const HomePage = () => {
         </ToggleButtonGroup>
       </Box>
       {!!computedPosts?.length && <PostsList posts={computedPosts} />}
-      <BottomNavbar selectedPath={PATHS.HOME} />
+      <BottomNavbar />
     </Box>
   );
 };

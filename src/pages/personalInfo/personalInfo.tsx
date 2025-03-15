@@ -4,10 +4,8 @@ import {
   Avatar,
   Box,
   Button,
-  FormControl,
   IconButton,
   Snackbar,
-  SvgIconProps,
   TextField,
   Typography,
 } from "@mui/material";
@@ -208,7 +206,7 @@ const PersonalInfo = () => {
         onClose={() => setBanner({ open: false, text: "" })}
         message={banner.text}
       />
-      <BottomNavbar selectedPath={PATHS.PERSONAL_INFO} />
+      <BottomNavbar />
     </Box>
   );
 };

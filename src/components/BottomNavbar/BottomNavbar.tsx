@@ -9,14 +9,16 @@ import PersonalInfo from "icons/PersonalInfo";
 import { useNavigate } from "react-router-dom";
 import { BottomNavigation, BottomNavigationAction } from "@mui/material";
 
-const BottomNavbar = ({ selectedPath }: { selectedPath?: string }) => {
-  const [activeItem, setActiveItem] = useState(selectedPath ?? PATHS.HOME);
+const BottomNavbar = () => {
+  const [activeItem, setActiveItem] = useState(
+    window.location.pathname ?? PATHS.HOME
+  );
   const navigate = useNavigate();
 
   const routes = useMemo(
     () => [
       {
-        value: PATHS.CHAT,
+        value: PATHS.CHATBOT,
         icon: <Chatbot sx={styles.icon} />,
         iconFill: <Chatbot selected sx={styles.icon} />,
       },
