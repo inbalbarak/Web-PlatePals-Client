@@ -137,9 +137,7 @@ const PersonalInfo = () => {
         </Box>
       ) : (
         <Box sx={styles.content}>
-          {/* TODO add profile image */}
           <TextIconComponent Icon={PersonIcon} text={user?.username ?? ""} />
-          {/* <TextIconComponent Icon={StarRateIcon} text={""} /> TODO add rating */}
           <Button
             sx={[styles.outlinedButton, styles.bottomCenter]}
             onClick={() => setEditMode(true)}
