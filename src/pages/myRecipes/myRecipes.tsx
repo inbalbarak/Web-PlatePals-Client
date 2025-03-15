@@ -8,7 +8,7 @@ import postsService from "services/posts.service";
 import { useQuery } from "react-query";
 import PostsList from "components/PostsList/PostsList";
 import { USER_ID } from "constants/localStorage";
-import usersService from "services/usersService";
+import usersService from "services/users.service";
 import { PostAttributes } from "src/interfaces/post.interface";
 
 const TABS = {

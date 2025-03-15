@@ -14,10 +14,9 @@ import {
   Typography,
 } from "@mui/material";
 import PostsList from "components/PostsList/PostsList";
-import { USER_ID } from "constants/localStorage";
-import { PATHS } from "constants/routes";
 import BottomNavbar from "components/BottomNavbar";
-import usersService from "services/usersService";
+import usersService from "services/users.service";
+import { USER_ID } from "constants/localStorage";
 
 enum Sort {
   TOP = "TOP",
@@ -43,16 +42,19 @@ const HomePage = () => {
     }
   );
 
-  const userId = localStorage.getItem(USER_ID);
-
   const { data: user } = useQuery(
     QUERY_KEYS.USER,
-    () => usersService.getById(userId ?? ""),
+    async () => {
+      const user = await usersService.getById(
+        localStorage.getItem(USER_ID) ?? ""
+      );
+
+      return user;
+    },
     {
-      enabled: !!userId,
       refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
       refetchOnMount: false,
+      refetchOnWindowFocus: false,
     }
   );
 
@@ -102,8 +104,6 @@ const HomePage = () => {
     exclusive: true,
   };
 
-  const username = user?.username;
-
   const sortButtons = Object.values(Sort).map((key) => {
     return (
       <ToggleButton sx={styles.sortButton} value={key} key={key}>
@@ -112,15 +112,13 @@ const HomePage = () => {
     );
   });
 
-  // TODO get avatar image from user
-
   return (
     <Box sx={styles.root}>
       <Box sx={styles.header}>
-        <Avatar src="" />
-        <Typography sx={styles.title}>Hello, {username}</Typography>
+        <Avatar src={user?.imageUrl} />
+        <Typography sx={styles.title}>Hello, {user?.username}</Typography>
       </Box>
-      <Box sx={{ width: "100%" }} key={username}>
+      <Box sx={{ width: "100%" }} key={user?.username}>
         <Box sx={styles.tagsBox}>
           {tags?.length &&
             chunk(tags, 4).map((tagsArray: TagAttributes[], index) => (

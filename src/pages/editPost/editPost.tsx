@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import { chunk } from "lodash";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./editPost.style";
 import { useQuery, useQueryClient } from "react-query";
 import InputField from "components/InputField";
@@ -20,9 +20,11 @@ import { USER_ID } from "constants/localStorage";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { PATHS } from "constants/routes";
+import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
+import filesService from "services/files.service";
 
 export interface PostFormAttributes {
-  image: string | null;
+  imageUrl: string | null;
   title: string | null;
   tags: string[];
   ingredients: string | null;
@@ -30,7 +32,7 @@ export interface PostFormAttributes {
 }
 
 const defaultValues: PostFormAttributes = {
-  image: null,
+  imageUrl: null,
   title: null,
   tags: [],
   ingredients: null,
@@ -85,6 +87,7 @@ const EditPost = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { id: postId } = useParams();
+  const [file, setFile] = useState<File>();
 
   const { data: posts } = useQuery(QUERY_KEYS.POSTS, postsService.getAll, {
     refetchOnReconnect: false,
@@ -119,6 +122,10 @@ const EditPost = () => {
 
   const onSave = async () => {
     try {
+      if (file) {
+        const imageUrl = await filesService.uploadImg(file);
+        imageUrl && setValue("imageUrl", imageUrl);
+      }
       await postsService.upsert({
         ...getValues(),
         author: localStorage.getItem(USER_ID),
@@ -131,6 +138,8 @@ const EditPost = () => {
       setBanner(true);
     }
   };
+
+  const inputFileRef = useRef<HTMLInputElement>(null);
 
   return (
     <Box sx={styles.root}>
@@ -145,7 +154,32 @@ const EditPost = () => {
           {post?._id ? "Edit your recipe" : "Create new recipe"}
         </Typography>
       </Box>
-      {/* TOOD add dropzone */}
+      <Box sx={styles.dropzone}>
+        <Box
+          component="img"
+          sx={styles.recipeImage}
+          src={
+            file
+              ? URL.createObjectURL(file)
+              : post?.imageUrl ?? "/recipe-default.png"
+          }
+        />
+        <IconButton
+          sx={styles.uploadPhotoButton}
+          onClick={() => {
+            inputFileRef.current?.click();
+          }}
+        >
+          <AddAPhotoIcon />
+        </IconButton>
+        <input
+          ref={inputFileRef}
+          onChange={(e) => setFile(e.target.files?.[0])}
+          type="file"
+          accept="image/jpeg, image/png"
+          style={{ display: "none" }}
+        />
+      </Box>
       <Box sx={styles.recipeBox}>
         <Box sx={styles.innerDisplay}>
           {FORM_FIELDS.map(

@@ -21,14 +21,27 @@ const styles = {
     color: colors.white,
   },
 
+  profileDetails: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyConent: "center",
+    gap: "20px",
+  },
+
+  username: {
+    fontSize: 20,
+  },
+
+  avatar: {
+    width: "100px",
+    height: "100px",
+  },
+
   profileText: {
     textAlign: "center",
     fontSize: 25,
     color: colors.white,
-  },
-
-  textIconComponent: {
-    display: "flex",
   },
 
   filledButton: {
@@ -42,13 +55,42 @@ const styles = {
   },
 
   bottomCenter: {
+    display: "flex",
     marginTop: "20vh",
-    width: "85vw",
+    justifySelf: "center",
+    width: "75%",
   },
 
   content: {
     marginTop: 5,
     padding: 3,
+  },
+
+  form: {
+    display: "flex",
+    width: "100%",
+    flexDirection: "column",
+  },
+
+  fields: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "10px",
+  },
+
+  profilePictureField: {
+    display: "flex",
+    width: "max-content",
+    alignItems: "start",
+    flexDirection: "column",
+    gap: "5px",
+  },
+
+  profilePicture: { display: "flex", alignItems: "baseline" },
+
+  uploadPhotoButton: {
+    width: "fit-content",
+    outline: "none !important",
   },
 };
 
