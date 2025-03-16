@@ -14,13 +14,13 @@ export const isTokenValid = () => {
     throw new Error("Invalid date string");
   }
   date.setHours(
-    date.getHours() + parseInt(import.meta.env.TOKEN_EXPIRES_HOURS ?? "")
+    date.getHours() + parseInt(import.meta.env.VITE_TOKEN_EXPIRES_HOURS ?? "")
   );
 
   return date > new Date();
 };
 
-const apiClient = axios.create({ baseURL: import.meta.env.BACKEND_URL });
+const apiClient = axios.create({ baseURL: import.meta.env.VITE_BACKEND_URL });
 
 apiClient.interceptors.request.use(async (request) => {
   if (!request.url?.includes("auth") || request.url?.includes("logout")) {
