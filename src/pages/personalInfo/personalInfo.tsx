@@ -118,6 +118,7 @@ const PersonalInfo = () => {
   const logoutUser = async () => {
     await logout();
     localStorage.clear();
+    queryClient.invalidateQueries(QUERY_KEYS.USER);
     navigate("/");
   };
 
