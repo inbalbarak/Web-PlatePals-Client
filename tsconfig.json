@@ -1,0 +1,50 @@
+{
+  "include": ["src", "vite.config.ts"],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ],
+  "compilerOptions": {
+    "baseUrl": "./",
+    "target": "ES2022",
+    "module": "ESNext",
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    /* Bundler mode */
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "isolatedModules": false,
+    "resolveJsonModule": true,
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    /* Additional settings */
+    "sourceMap": true,
+    "incremental": true,
+    "declaration": true,
+    "skipLibCheck": false,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "removeComments": true,
+    "strictNullChecks": true,
+    "strictBindCallApply": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "useDefineForClassFields": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    // aliases should be added both here and in vite.config.ts
+    "paths": {
+      "constants/*": ["./src/constants/*"],
+      "services/*": ["./src/services/*"],
+      "components/*": ["./src/components/*"],
+      "pages/*": ["./src/pages/*"],
+      "icons/*": ["./src/icons/*"],
+      "utils/*": ["./src/utils/*"]
+    }
+  }
+}
