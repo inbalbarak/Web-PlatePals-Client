@@ -53,7 +53,6 @@ const HomePage = () => {
     },
     {
       refetchOnReconnect: false,
-      refetchOnMount: false,
       refetchOnWindowFocus: false,
     }
   );
