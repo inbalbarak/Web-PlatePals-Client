@@ -16,7 +16,7 @@ export default {
     ).data,
   updateSavedPosts: async (userId: string, postId: string, toSave: boolean) =>
     (
-      await apiClient.put(`${baseUrl}/saved-posts/${userId}`, {
+      await apiClient.put(`${baseUrl}/${userId}/saved-posts`, {
         postId,
         toSave,
       })
