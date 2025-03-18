@@ -1,5 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
-import { PATHS } from "constants/routes";
+import { useEffect, useState } from "react";
 import BottomNavbar from "components/BottomNavbar";
 import { Box, Tab, Tabs, Typography } from "@mui/material";
 import styles from "./myRecipes.style";
