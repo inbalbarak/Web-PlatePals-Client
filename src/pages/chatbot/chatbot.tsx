@@ -14,6 +14,7 @@ const ChatBot = () => {
   const [banner, setBanner] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isUserTurn, setIsUserTurn] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const [inputValue, setInputValue] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -38,11 +39,16 @@ const ChatBot = () => {
   }, []);
 
   useEffect(() => {
-    if (isUserTurn === false) {
+    if (!isUserTurn) {
       const getBotMessage = async (
         messages: ChatMessage[]
       ): Promise<ChatMessage> => {
-        return await botService.getBotResponse(messages);
+        setLoading(true);
+        try {
+          return await botService.getBotResponse(messages);
+        } finally {
+          setLoading(false);
+        }
       };
 
       if (messages[messages.length - 1].role === "user") {
@@ -101,6 +107,17 @@ const ChatBot = () => {
               </Paper>
             </Box>
           ))}
+        {loading && (
+          <Box sx={styles.messageRow}>
+            <Paper sx={{ ...styles.messageBubble, ...styles.botMessage }}>
+              <Box sx={styles.loadingDots}>
+                <span>.</span>
+                <span>.</span>
+                <span>.</span>
+              </Box>
+            </Paper>
+          </Box>
+        )}
         <div ref={messagesEndRef} />
       </Box>
       <Box sx={styles.inputContainer} onClick={() => inputRef.current?.focus()}>
