@@ -45,22 +45,25 @@ const MyRecipes = () => {
     }
   );
 
-  useEffect(() => {
-    const fetchPostsByIds = async () => {
-      if (user?.savedPosts) {
-        try {
-          const posts = await postsService.getByIds(user.savedPosts);
-          setSavedPosts(posts);
-        } catch (error) {
-          setSavedPosts([]);
-        }
+  const fetchPostsByIds = async () => {
+    if (user?.savedPosts) {
+      try {
+        const posts = await postsService.getByIds(user.savedPosts);
+        setSavedPosts(posts);
+      } catch (error) {
+        setSavedPosts([]);
       }
-    };
+    }
+  };
 
+  useEffect(() => {
     fetchPostsByIds();
   }, []);
 
   const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
+    if (newValue === TABS.SAVED) {
+      fetchPostsByIds();
+    }
     setSelectedTabs(newValue);
   };
 
