@@ -58,7 +58,7 @@ const MyRecipes = () => {
     };
 
     fetchPostsByIds();
-  }, [user]);
+  }, []);
 
   const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
     setSelectedTabs(newValue);
