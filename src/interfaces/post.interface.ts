@@ -14,6 +14,7 @@ export interface PostAttributes {
   ingredients: string;
   instructions: string;
   createdAt?: string;
+  commentCount: number;
 }
 
 export interface PostDTOAttributes

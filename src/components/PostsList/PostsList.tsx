@@ -34,9 +34,8 @@ const PostsList: FC<PostsListProps> = ({ posts, editable, refetch }) => {
   const queryClient = useQueryClient();
 
   const createPost = (post: PostAttributes) => {
-    const { title, ratingCount, averageRating, author, imageUrl } = post;
+    const { title, averageRating, author, imageUrl, commentCount } = post;
 
-    // TODO get recipe image from post
     return (
       <Box
         key={post._id}
@@ -61,7 +60,7 @@ const PostsList: FC<PostsListProps> = ({ posts, editable, refetch }) => {
               component="div"
               sx={styles.postRatingText}
             >
-              {`${averageRating} | ${ratingCount} Reviews`}
+              {`${averageRating} | ${commentCount} Reviews`}
             </Typography>
           </Box>
           {!editable && (
