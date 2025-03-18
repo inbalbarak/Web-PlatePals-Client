@@ -17,6 +17,12 @@ const styles = {
     overflowY: "auto",
     scrollbarWidth: "thin",
   },
+  messageRow: {
+    display: "flex",
+    width: "100%",
+    gap: "8px",
+    flexDirection: "column",
+  },
   messageBubble: {
     display: "flex",
     maxWidth: "100%",
@@ -38,11 +44,32 @@ const styles = {
     color: "black",
     alignSelf: "flex-start",
   },
-  messageRow: {
+  loadingDots: {
     display: "flex",
-    width: "100%",
-    gap: "8px",
-    flexDirection: "column",
+    gap: "4px",
+    fontSize: "24px",
+    fontWeight: "bold",
+    alignSelf: "flex-start",
+
+    "& span": {
+      animation: "dotFlashing 1.5s infinite linear",
+      animationDelay: "0s",
+      opacity: 0,
+    },
+
+    "& span:nth-child(2)": {
+      animationDelay: "0.2s",
+    },
+
+    "& span:nth-child(3)": {
+      animationDelay: "0.4s",
+    },
+
+    "@keyframes dotFlashing": {
+      "0%": { opacity: 0 },
+      "50%": { opacity: 1 },
+      "100%": { opacity: 0 },
+    },
   },
   inputContainer: {
     display: "flex",
@@ -64,7 +91,6 @@ const styles = {
     width: "40px",
     height: "40px",
     marginLeft: "8px",
-
     "&:hover": {
       boxShadow: "none",
       backgroundColor: "transparent",
